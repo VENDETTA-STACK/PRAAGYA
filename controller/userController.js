@@ -79,6 +79,7 @@ module.exports = {
   getUserByEmail: async (req, res) => {
     if (req.body.email) {
       let email = `${req.body.email}`;
+      console.log(email);
       const user = await userSchemaModel.findOne({
         user_name: email,
       });
