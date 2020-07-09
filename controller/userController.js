@@ -58,7 +58,7 @@ module.exports = {
       }
     } else {
       let detail = error.details[0].message;
-      res.json({ error: true, data: detail });
+      res.send({ error: true, data: detail });
     }
   },
   getUser: async (req, res) => {
