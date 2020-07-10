@@ -16,7 +16,7 @@ module.exports = {
   },
 
   getState: async (req, res) => {
-    const state = await stateSchemaModel.find({});
+    const state = await stateSchemaModel.find({}).populate("countryId");
     if (!state) {
       res.status(500).json({ error: true, data: "no state found !" });
     } else {
@@ -25,7 +25,7 @@ module.exports = {
   },
 
   getCity: async (req, res) => {
-    const city = await citySchemaModel.find({});
+    const city = await citySchemaModel.find({}).populate("stateId");
     if (!city) {
       res.status(500).json({ error: true, data: "no city found !" });
     } else {
