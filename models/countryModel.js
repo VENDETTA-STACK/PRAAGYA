@@ -4,8 +4,8 @@ var countrySchema = mongoose.Schema({
   Name: String,
 });
 
-var Country = mongoose.model("Country", countrySchema);
+var countrySchemaModel = mongoose.model("Country", countrySchema);
 
 module.exports = {
-  Country,
+  countrySchemaModel,
 };

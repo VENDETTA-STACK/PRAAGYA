@@ -9,8 +9,8 @@ var citySchema = mongoose.Schema({
   },
 });
 
-var City = mongoose.model("City", citySchema);
+var citySchemaModel = mongoose.model("City", citySchema);
 
 module.exports = {
-  City,
+  citySchemaModel,
 };

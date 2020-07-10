@@ -9,8 +9,8 @@ var stateSchema = mongoose.Schema({
   },
 });
 
-var State = mongoose.model("State", stateSchema);
+var stateSchemaModel = mongoose.model("State", stateSchema);
 
 module.exports = {
-  State,
+  stateSchemaModel,
 };
