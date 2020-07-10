@@ -32,9 +32,9 @@ var userSchema = mongoose.Schema({
     required: true,
   },
   city: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "City",
-    required: true,
+    type: String, //mongoose.Schema.Types.ObjectId,
+    // ref: "City",
+    // required: true,
   },
 
   schoolName: String,
