@@ -2,6 +2,7 @@
 //created by Hatem Ragap
 const Joi = require("joi");
 const passwordHash = require("password-hash");
+var moment = require("moment-timezone");
 const { userSchemaModel } = require("../models/userModel");
 const { postSchemaModel } = require("../models/postsModel");
 const { likeSchemaModel } = require("../models/likesModel");
@@ -11,13 +12,28 @@ module.exports = {
   createUser: async (req, res) => {
     const { error } = createUserValidation(req.body);
     if (!error) {
-      const { user_name, email, password } = req.body;
-      const hashedPassword = await passwordHash.generate(password);
+      const hashedPassword = await passwordHash.generate(req.body.password);
       return new Promise((resolve, reject) => {
         const userModel = userSchemaModel({
-          user_name: user_name,
-          email: email,
+          user_name: req.body.user_name,
+          email: req.body.email,
           password: hashedPassword,
+          gender: req.body.gender,
+          dob: req.body.dob,
+          country: req.body.country,
+          state: req.body.state,
+          city: req.body.city,
+          schoolName: req.body.schoolname,
+          schoolAddress: req.body.schooladdress,
+          schoolLocation: req.body.schoollocation,
+          affilatedWith: req.body.affilatedwith,
+          afillatedNumber: req.body.afillatednumber,
+          officeNumber: req.body.officenumber,
+          personalNumber: req.body.personalnumber,
+          martialStatus: req.body.martialstatus,
+          dateOfMarriage: req.body.dateofmarriage,
+          Status: false,
+          created: moment().tz("Asia/Calcutta").format("DD MM YYYY, h:mm:ss a"),
         });
         userModel.save(async (err) => {
           if (err) {
