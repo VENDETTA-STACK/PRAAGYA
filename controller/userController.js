@@ -79,8 +79,8 @@ module.exports = {
   getUserByEmail: async (req, res) => {
     if (req.body.email) {
       let email = req.body.email;
-      const user = await userSchemaModel.findOne({
-        user_name: email,
+      const user = await userSchemaModel.find({
+        user_name: { $regex: email },
       });
       if (!user) {
         res.status(500).json({ error: true, data: "no user found !" });
