@@ -5,13 +5,6 @@ const { stateSchemaModel } = require("../models/stateModel");
 const { citySchemaModel } = require("../models/cityModel");
 
 module.exports = {
-  insertCountry: async (req, res) => {
-    country = countrySchemaModel({
-      Name: req.body.name,
-    });
-    country.save();
-  },
-
   getCountry: async (req, res) => {
     countrySchemaModel.find({}, (err, country) => {
       if (err) {
