@@ -35,7 +35,7 @@ module.exports = {
           afillatedNumber: req.body.afillatednumber,
           officeNumber: req.body.officenumber,
           personalNumber: req.body.personalnumber,
-          martialStatus: req.body.martialstatus,
+          maritalstatus: req.body.maritalstatus,
           dateOfMarriage: req.body.dateofmarriage,
           Status: false,
           created: moment().tz("Asia/Calcutta").format("DD MM YYYY, h:mm:ss a"),

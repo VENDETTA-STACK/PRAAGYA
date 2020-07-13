@@ -42,7 +42,7 @@ var userSchema = mongoose.Schema({
   afillatedNumber: String,
   officeNumber: String,
   personalNumber: String,
-  martialStatus: String,
+  maritalstatus: String,
   dateOfMarriage: String,
   Status: Boolean,
 
