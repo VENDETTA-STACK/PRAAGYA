@@ -6,6 +6,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const express = require("express");
 const mongoose = require("mongoose");
+var cors = require("cors");
 const userRouter = require("./router/userRouter");
 const postRouter = require("./router/postRouter.js");
 const likesRouter = require("./router/likesRouter");
@@ -33,6 +34,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // public place for img
 app.use("/uploads", express.static("uploads"));
+
+//cors for admin panel
+app.use(cors());
 
 // parse an HTML body into a string
 app.use(bodyParser.json());
