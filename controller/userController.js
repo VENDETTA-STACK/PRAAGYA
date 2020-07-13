@@ -10,7 +10,12 @@ const { commentSchemaModel } = require("../models/commentsModel");
 
 module.exports = {
   createUser: async (req, res) => {
-    const { error } = createUserValidation(req.body);
+    const user = {
+      user_name: req.body.user_name,
+      email: req.body.email,
+      password: req.body.password,
+    };
+    const { error } = createUserValidation(user);
     if (!error) {
       const hashedPassword = await passwordHash.generate(req.body.password);
       return new Promise((resolve, reject) => {

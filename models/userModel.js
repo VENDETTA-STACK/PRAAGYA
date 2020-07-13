@@ -19,8 +19,6 @@ var userSchema = mongoose.Schema({
     min: 5,
   },
 
-  gender: String,
-  dob: String,
   country: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Country",
@@ -32,10 +30,10 @@ var userSchema = mongoose.Schema({
     required: true,
   },
   city: {
-    type: String, //mongoose.Schema.Types.ObjectId,
-    // ref: "City",
-    // required: true,
+    type: String,
   },
+  gender: String,
+  dob: String,
 
   schoolName: String,
   schoolAddress: String,
@@ -67,7 +65,7 @@ var userSchema = mongoose.Schema({
     type: String,
   },
 });
-userSchema.plugin(uniqueValidator);
+// userSchema.plugin(uniqueValidator);
 var userSchemaModel = mongoose.model("users", userSchema);
 
 module.exports = {
