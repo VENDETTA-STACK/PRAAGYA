@@ -120,6 +120,27 @@ module.exports = {
       res.status(200).json({ error: false, data: user });
     }
   },
+
+  verifyUser: async (req, res) => {
+    /* 0 means false and 1 means true */
+    var id = req.body.Id;
+    var status = req.body.Status;
+    var sts = status == 0 ? true : false;
+    userSchemaModel.findByIdAndUpdate(
+      id,
+      {
+        Status: sts,
+      },
+      (err, record) => {
+        if (err) {
+          res.send({ error: true, data: "err" + err });
+        } else {
+          res.send({ error: false, data: record });
+        }
+      }
+    );
+  },
+
   get_likes_posts_comments_counts: async (req, res) => {
     const { error } = idValidation(req.body);
     if (!error) {
