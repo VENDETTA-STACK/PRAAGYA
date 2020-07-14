@@ -2,7 +2,7 @@
 
 const { countrySchemaModel } = require("../models/countryModel");
 const { stateSchemaModel } = require("../models/stateModel");
-const { citySchemaModel } = require("../models/cityModel");
+const { affiliationSchemaModel } = require("../models/affiliationModel");
 
 module.exports = {
   getCountry: async (req, res) => {
@@ -26,12 +26,25 @@ module.exports = {
     }
   },
 
-  //   getCity: async (req, res) => {
-  //     const city = await citySchemaModel.find({}).populate("stateId");
-  //     if (!city) {
-  //       res.status(500).json({ error: true, data: "no city found !" });
-  //     } else {
-  //       res.status(200).json({ error: false, data: city });
-  //     }
-  //   },
+  getAffilation: async (req, res) => {
+    // const affilationModel = affiliationSchemaModel({
+    //   Name: "International Board",
+    // });
+    // affilationModel.save(async (err) => {
+    //   if (err) {
+    //     res.status(500).json({
+    //       error: true,
+    //       data: err,
+    //     });
+    //   } else {
+    //     res.status(200).json({ error: false, data: affilationModel });
+    //   }
+    // });
+    const city = await affiliationSchemaModel.find({});
+    if (!city) {
+      res.status(500).json({ error: true, data: "no city found !" });
+    } else {
+      res.status(200).json({ error: false, data: city });
+    }
+  },
 };

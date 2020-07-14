@@ -38,7 +38,11 @@ var userSchema = mongoose.Schema({
   schoolName: String,
   schoolAddress: String,
   schoolLocation: String,
-  affilatedWith: String,
+  affilatedWith: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Affiliation",
+    required: true,
+  },
   afillatedNumber: String,
   officeNumber: String,
   personalNumber: String,
