@@ -71,12 +71,12 @@ module.exports = {
         password,
         user.password
       );
-      if (user.Status == false) {
-        res.status(500).json({ error: true, data: "User is blcoked." });
-      }
       if (!isPasswordMatch) {
         res.status(500).json({ error: true, data: "password not match !" });
       } else {
+        if (user.Status == false) {
+          res.status(500).json({ error: true, data: "User is blcoked." });
+        }
         res.status(200).json({ error: false, data: user });
       }
     } else {
