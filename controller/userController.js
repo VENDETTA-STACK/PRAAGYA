@@ -123,6 +123,15 @@ module.exports = {
     }
   },
 
+  getUsersById: async (req, res) => {
+    const data = await userSchemaModel.findById(req.body.id);
+    if (!data) {
+      res.status(500).json({ error: true, data: "no user found !" });
+    } else {
+      res.status(200).json({ error: false, data: data });
+    }
+  },
+
   verifyUser: async (req, res) => {
     /* 0 means false and 1 means true */
     var id = req.body.Id;
