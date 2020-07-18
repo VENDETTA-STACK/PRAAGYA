@@ -26,7 +26,6 @@ userRouter.post(
 userRouter.post("/get", userController.getUser); // /api/user/get
 userRouter.post("/getUserByEmail", userController.getUserByEmail); // /api/user/get
 userRouter.post("/getUsers", userController.getUsers); // /api/user/get
-userRouter.post("/getUsersById", userController.getUsersById);
 userRouter.post("/img", upload.single("img"), userController.addUserImg);
 userRouter.post("/update_bio", userController.update_bio);
 userRouter.post("/update_user_token", userController.updateAndAddUserToken);
