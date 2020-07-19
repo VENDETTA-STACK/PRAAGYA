@@ -88,11 +88,7 @@ module.exports = {
     const { error } = idValidation(req.body);
     if (!error) {
       let id = `${req.body.user_id}`;
-      const user = await userSchemaModel
-        .findById(id)
-        .populate("country")
-        .populate("state")
-        .populate("affilatedWith");
+      const user = await userSchemaModel.findById(id);
       if (!user) {
         res.status(500).json({ error: true, data: "no user found !" });
       } else {
