@@ -79,10 +79,9 @@ module.exports = {
             affiliationCode: membershipNumber.affiliationcode,
             membershipNumber: membershipNumber.membershipcode,
             schoolName: req.body.schoolname,
-            schoolAddress: req.body.schooladdress,
             schoolLocation: req.body.schoollocation,
             affilatedWith: req.body.affilatedwith,
-            afillatedNumber: req.body.afillatednumber,
+            afillatedNumber: req.body.affilatednumber,
             whatsappNumber: req.body.whatsappnumber,
             personalNumber: req.body.personalnumber,
             Status: true,
@@ -318,7 +317,7 @@ module.exports = {
 
 function createUserValidation(user) {
   const schema = Joi.object().keys({
-    user_name: Joi.string().min(5).max(30).required(),
+    name: Joi.string().min(5).max(30).required(),
     email: Joi.string().email({ minDomainAtoms: 2 }).max(30).required(),
     password: Joi.string().min(6).max(30).required(),
   });
