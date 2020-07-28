@@ -48,7 +48,7 @@ async function creatingmembershipid(state, affiliated) {
 module.exports = {
   createUser: async (req, res) => {
     const user = {
-      name: req.body.user_name,
+      name: req.body.name,
       email: req.body.email,
       password: req.body.password,
     };
