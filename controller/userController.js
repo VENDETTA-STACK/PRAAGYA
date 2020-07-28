@@ -1,5 +1,4 @@
 "use strict";
-//created by Hatem Ragap
 const Joi = require("joi");
 const passwordHash = require("password-hash");
 var moment = require("moment-timezone");
@@ -7,6 +6,44 @@ const { userSchemaModel } = require("../models/userModel");
 const { postSchemaModel } = require("../models/postsModel");
 const { likeSchemaModel } = require("../models/likesModel");
 const { commentSchemaModel } = require("../models/commentsModel");
+const { stateSchemaModel } = require("../models/stateModel");
+const { affiliationSchemaModel } = require("../models/affiliationModel");
+
+async function creatingmembershipid(state, affiliated) {
+  var stateCode, affiliatedCode, record;
+  var result = {};
+  stateCode = await stateSchemaModel.findById(state).select("code -_id");
+  affiliatedCode = await affiliationSchemaModel
+    .findById(affiliated)
+    .select("code -_id");
+  record = await userSchemaModel.find({
+    stateCode: stateCode.code,
+    affiliationCode: affiliatedCode.code,
+  });
+  if (record.length == 0) {
+    result = {
+      statecode: stateCode.code,
+      affiliationcode: affiliatedCode.code,
+      membershipcode: "001",
+    };
+    return result;
+  } else {
+    addNumber = parseInt(record.membershipNumber) + 1;
+    if (addNumber.length == 1) {
+      addNumber = "00" + addNumber;
+    } else if (addNumber.length == 2) {
+      addNumber = "0" + addNumber;
+    } else {
+      addNumber = addNumber;
+    }
+    result = {
+      statecode: stateCode.code,
+      affiliationcode: affiliatedCode.code,
+      membershipcode: addNumber,
+    };
+    return result;
+  }
+}
 
 module.exports = {
   createUser: async (req, res) => {
@@ -17,41 +54,64 @@ module.exports = {
     };
     const { error } = createUserValidation(user);
     if (!error) {
-      const hashedPassword = await passwordHash.generate(req.body.password);
-      return new Promise((resolve, reject) => {
-        const userModel = userSchemaModel({
-          user_name: req.body.user_name,
-          email: req.body.email,
-          password: hashedPassword,
-          gender: req.body.gender,
-          dob: req.body.dob,
-          country: req.body.country,
-          state: req.body.state,
-          city: req.body.city,
-          schoolName: req.body.schoolname,
-          schoolAddress: req.body.schooladdress,
-          schoolLocation: req.body.schoollocation,
-          affilatedWith: req.body.affilatedwith,
-          afillatedNumber: req.body.afillatednumber,
-          officeNumber: req.body.officenumber,
-          personalNumber: req.body.personalnumber,
-          maritalstatus: req.body.maritalstatus,
-          dateOfMarriage: req.body.dateofmarriage,
-          Status: false,
-          created: moment().tz("Asia/Calcutta").format("DD MM YYYY, h:mm:ss a"),
-        });
-        userModel.save(async (err) => {
-          if (err) {
-            res.status(500).json({
-              error: true,
-              data: "email already used choose another" + err,
-              chatId: [],
-            });
-          } else {
-            res.status(200).json({ error: false, data: userModel });
-          }
-        });
+      email = await userSchemaModel.find({ email: req.body.email });
+      mobile = await userSchemaModel.find({
+        personalNumber: req.body.personalnumber,
       });
+      if (email.length == 0 && mobile.length == 0) {
+        const hashedPassword = await passwordHash.generate(req.body.password);
+        var membershipNumber = await creatingmembershipid(
+          req.body.state,
+          req.body.affilatedWith
+        );
+        return new Promise((resolve, reject) => {
+          const userModel = userSchemaModel({
+            name: req.body.user_name,
+            email: req.body.email,
+            password: hashedPassword,
+            gender: req.body.gender,
+            dob: req.body.dob,
+            country: req.body.country,
+            state: req.body.state,
+            city: req.body.city,
+            stateCode: membershipNumber.statecode,
+            affiliationCode: membershipNumber.affiliationcode,
+            membershipNumber: membershipNumber.membershipcode,
+            schoolName: req.body.schoolname,
+            schoolAddress: req.body.schooladdress,
+            schoolLocation: req.body.schoollocation,
+            affilatedWith: req.body.affilatedwith,
+            afillatedNumber: req.body.afillatednumber,
+            whatsappNumber: req.body.whatsappnumber,
+            personalNumber: req.body.personalnumber,
+            Status: true,
+            created: moment()
+              .tz("Asia/Calcutta")
+              .format("DD MM YYYY, h:mm:ss a"),
+          });
+          userModel.save(async (err) => {
+            if (err) {
+              res.status(500).json({
+                error: true,
+                data: "email already used choose another" + err,
+                chatId: [],
+              });
+            } else {
+              res.status(200).json({ error: false, data: userModel });
+            }
+          });
+        });
+      } else {
+        if (email.length == 0 && mobile.length == 0) {
+          res.send({ error: true, data: "Email and Mobile already taken" });
+        } else {
+          if (email.length == 0) {
+            res.send({ error: true, data: "Email already taken" });
+          } else {
+            res.send({ error: true, data: "Mobile already taken" });
+          }
+        }
+      }
     } else {
       let detail = error.details[0].message;
       res.send({ error: true, data: detail });

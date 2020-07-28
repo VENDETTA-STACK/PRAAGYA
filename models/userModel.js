@@ -4,7 +4,7 @@ var uniqueValidator = require("mongoose-unique-validator");
 const Joi = require("joi");
 
 var userSchema = mongoose.Schema({
-  user_name: {
+  name: {
     type: String,
     max: 30,
     min: 5,
@@ -18,7 +18,9 @@ var userSchema = mongoose.Schema({
     max: 50,
     min: 5,
   },
-
+  stateCode: String,
+  affiliationCode: String,
+  membershipNumber: String,
   country: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Country",
@@ -34,7 +36,7 @@ var userSchema = mongoose.Schema({
   },
   gender: String,
   dob: String,
-
+  designation: String,
   schoolName: String,
   schoolAddress: String,
   schoolLocation: String,
@@ -44,12 +46,9 @@ var userSchema = mongoose.Schema({
     required: true,
   },
   afillatedNumber: String,
-  officeNumber: String,
+  whatsappNumber: String,
   personalNumber: String,
-  maritalstatus: String,
-  dateOfMarriage: String,
   Status: Boolean,
-
   token: { type: String, default: "" },
   password: {
     type: String,
