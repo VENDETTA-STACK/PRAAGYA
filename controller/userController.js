@@ -28,10 +28,12 @@ async function creatingmembershipid(state, affiliated) {
     };
     return result;
   } else {
-    addNumber = parseInt(record.membershipNumber) + 1;
-    if (addNumber.length == 1) {
+    var addNumber;
+    addNumber = parseInt(record[0].membershipNumber) + 1;
+    console.log(addNumber.toString().length);
+    if (addNumber.toString().length == 1) {
       addNumber = "00" + addNumber;
-    } else if (addNumber.length == 2) {
+    } else if (addNumber.toString().length == 2) {
       addNumber = "0" + addNumber;
     } else {
       addNumber = addNumber;
@@ -47,6 +49,7 @@ async function creatingmembershipid(state, affiliated) {
 
 module.exports = {
   createUser: async (req, res) => {
+    console.log(req.body.name);
     const user = {
       name: req.body.name,
       email: req.body.email,
@@ -102,10 +105,10 @@ module.exports = {
           });
         });
       } else {
-        if (email.length == 0 && mobile.length == 0) {
+        if (email.length == 1 && mobile.length == 1) {
           res.send({ error: true, data: "Email and Mobile already taken" });
         } else {
-          if (email.length == 0) {
+          if (email.length == 1) {
             res.send({ error: true, data: "Email already taken" });
           } else {
             res.send({ error: true, data: "Mobile already taken" });
