@@ -59,6 +59,9 @@ var userSchema = mongoose.Schema({
     type: String,
     default: "default-user-profile-image.png",
   },
+  cover: {
+    type: String,
+  },
   bio: {
     type: String,
     default: "Hi iam using Pragya App",

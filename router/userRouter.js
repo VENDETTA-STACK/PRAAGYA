@@ -7,7 +7,13 @@ const multer = require("multer");
 //img path
 // http://localhost:5000/uploads/users_profile_img/1582645366303-apple-logo.png
 const storage = multer.diskStorage({
-  destination: "uploads/users_profile_img",
+  destination: function (req, file, cb) {
+    if (file.fieldname == "img") {
+      cb(null, "uploads/users_profile_img");
+    } else {
+      cb(null, "uploads/users_cover_img");
+    }
+  },
   filename: function (req, file, cb) {
     cb(null, Date.now() + "-" + file.originalname);
   },
@@ -26,7 +32,11 @@ userRouter.post(
 userRouter.post("/get", userController.getUser); // /api/user/get
 userRouter.post("/getUserByEmail", userController.getUserByEmail); // /api/user/get
 userRouter.post("/getUsers", userController.getUsers); // /api/user/get
-userRouter.post("/img", upload.single("img"), userController.addUserImg);
+userRouter.post(
+  "/img",
+  upload.fields([{ name: "img" }, { name: "cover" }]),
+  userController.addUserImg
+);
 userRouter.post("/update_bio", userController.update_bio);
 userRouter.post("/update_user_token", userController.updateAndAddUserToken);
 
