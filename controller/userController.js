@@ -234,65 +234,34 @@ module.exports = {
     }
   },
   addUserImg: async (req, res) => {
-    if (req.files.img && req.files.cover) {
-      let name = req.files.img[0].filename;
-      let cover = req.files.cover[0].filename;
-      let user_id = req.body.user_id;
-      let bio = req.body.bio;
-      if (bio) {
-        await userSchemaModel
-          .findByIdAndUpdate(user_id, { img: name, bio: bio, cover: cover })
-          .exec((err) => {
-            if (err) res.send({ error: true, data: "err" + err });
-            else res.send({ error: false, data: name });
-          });
-      } else {
-        await userSchemaModel
-          .findByIdAndUpdate(user_id, { img: name, cover: cover })
-          .exec((err) => {
-            if (err) res.send({ error: true, data: "err" + err });
-            else res.send({ error: false, data: name });
-          });
-      }
-    } else if (req.files.img) {
-      let name = req.files.img[0].filename;
-      let user_id = req.body.user_id;
-      let bio = req.body.bio;
-      if (bio) {
-        await userSchemaModel
-          .findByIdAndUpdate(user_id, { img: name, bio: bio })
-          .exec((err) => {
-            if (err) res.send({ error: true, data: "err" + err });
-            else res.send({ error: false, data: name });
-          });
-      } else {
-        await userSchemaModel
-          .findByIdAndUpdate(user_id, { img: name })
-          .exec((err) => {
-            if (err) res.send({ error: true, data: "err" + err });
-            else res.send({ error: false, data: name });
-          });
-      }
-    } else if (req.files.cover) {
-      let cover = req.files.cover[0].filename;
-      let user_id = req.body.user_id;
-      let bio = req.body.bio;
-      if (bio) {
-        await userSchemaModel
-          .findByIdAndUpdate(user_id, { bio: bio, cover: cover })
-          .exec((err) => {
-            if (err) res.send({ error: true, data: "err" + err });
-            else res.send({ error: false, data: name });
-          });
-      } else {
-        await userSchemaModel
-          .findByIdAndUpdate(user_id, { cover: cover })
-          .exec((err) => {
-            if (err) res.send({ error: true, data: "err" + err });
-            else res.send({ error: false, data: name });
-          });
-      }
+    let user_id = req.body.user_id;
+    let name = req.file.filename;
+    let bio = req.body.bio;
+    if (bio) {
+      await userSchemaModel
+        .findByIdAndUpdate(user_id, { img: name, bio: bio })
+        .exec((err) => {
+          if (err) res.send({ error: true, data: "err" + err });
+          else res.send({ error: false, data: name });
+        });
+    } else {
+      await userSchemaModel
+        .findByIdAndUpdate(user_id, { img: name })
+        .exec((err) => {
+          if (err) res.send({ error: true, data: "err" + err });
+          else res.send({ error: false, data: name });
+        });
     }
+  },
+  addCoverImg: async (req, res) => {
+    let user_id = req.body.user_id;
+    let name = req.file.filename;
+    await userSchemaModel
+      .findByIdAndUpdate(user_id, { cover: name })
+      .exec((err) => {
+        if (err) res.send({ error: true, data: "err" + err });
+        else res.send({ error: false, data: name });
+      });
   },
   update_bio: async (req, res) => {
     let user_id = req.body.user_id;

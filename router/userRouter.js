@@ -32,10 +32,11 @@ userRouter.post(
 userRouter.post("/get", userController.getUser); // /api/user/get
 userRouter.post("/getUserByEmail", userController.getUserByEmail); // /api/user/get
 userRouter.post("/getUsers", userController.getUsers); // /api/user/get
+userRouter.post("/img", upload.single("img"), userController.addUserImg);
 userRouter.post(
-  "/img",
-  upload.fields([{ name: "img" }, { name: "cover" }]),
-  userController.addUserImg
+  "/coverimg",
+  upload.single("cover"),
+  userController.addCoverImg
 );
 userRouter.post("/update_bio", userController.update_bio);
 userRouter.post("/update_user_token", userController.updateAndAddUserToken);
