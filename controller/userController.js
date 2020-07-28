@@ -48,7 +48,7 @@ async function creatingmembershipid(state, affiliated) {
 module.exports = {
   createUser: async (req, res) => {
     const user = {
-      user_name: req.body.user_name,
+      name: req.body.user_name,
       email: req.body.email,
       password: req.body.password,
     };
@@ -67,7 +67,7 @@ module.exports = {
         );
         return new Promise((resolve, reject) => {
           const userModel = userSchemaModel({
-            name: req.body.sc,
+            name: req.body.name,
             email: req.body.email,
             password: hashedPassword,
             gender: req.body.gender,
