@@ -54,6 +54,7 @@ module.exports = {
     };
     const { error } = createUserValidation(user);
     if (!error) {
+      var email, mobile;
       email = await userSchemaModel.find({ email: req.body.email });
       mobile = await userSchemaModel.find({
         personalNumber: req.body.personalnumber,
@@ -62,11 +63,11 @@ module.exports = {
         const hashedPassword = await passwordHash.generate(req.body.password);
         var membershipNumber = await creatingmembershipid(
           req.body.state,
-          req.body.affilatedWith
+          req.body.affilatedwith
         );
         return new Promise((resolve, reject) => {
           const userModel = userSchemaModel({
-            name: req.body.user_name,
+            name: req.body.sc,
             email: req.body.email,
             password: hashedPassword,
             gender: req.body.gender,
