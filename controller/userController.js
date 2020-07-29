@@ -106,20 +106,21 @@ module.exports = {
               });
             } else {
               var body =
-                "Dear" +
+                "Dear " +
                 req.body.name +
                 "<br />" +
                 "Congratulation for being Member of " +
                 req.body.name +
                 " Family. Your Membership Id is " +
-                membershipNumber.stateCode +
+                membershipNumber.statecode +
                 membershipNumber.affiliationcode +
                 "-" +
                 membershipNumber.membershipcode +
                 "." +
                 "<br />" +
                 "Kindly click the following link to genrate Membership Certificate";
-              url =
+              body = encodeURI(body);
+              var url =
                 "http://promosms.itfuturz.com/vendorsms/pushsms.aspx?user=prclub&password=dns123&msisdn=" +
                 req.body.personalnumber +
                 "&sid=PRCLUB&msg=" +
