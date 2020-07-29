@@ -56,7 +56,7 @@ module.exports = {
         .skip(startIndex)
         .sort({ createdAt: -1 })
         .populate(user_id)
-        .populate("user_id", "img user_name _id");
+        .populate("user_id", "img name _id");
 
       if (posts.length === 0) {
         results.error = true;
@@ -100,7 +100,7 @@ module.exports = {
       .find({ user_id: peer_id })
       .sort({ createdAt: -1 })
       .populate(peer_id)
-      .populate("user_id", "img user_name _id");
+      .populate("user_id", "img name _id");
     if (posts.length === 0) {
       results.error = true;
       results.data = "No posts ";
@@ -129,7 +129,7 @@ module.exports = {
     const posts = await postSchemaModel
       .findById(post_id)
       .populate(peer_id)
-      .populate("user_id", "img user_name _id");
+      .populate("user_id", "img name _id");
     if (posts.length === 0) {
       results.error = true;
       results.data = "Post deleted ! ";

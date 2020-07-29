@@ -13,45 +13,6 @@ const { stateSchemaModel } = require("../models/stateModel");
 const { affiliationSchemaModel } = require("../models/affiliationModel");
 const { degrees, PDFDocument, rgb, StandardFonts } = require("pdf-lib");
 const { worker } = require("cluster");
-const { Router } = require("express");
-const { urlencoded } = require("body-parser");
-async function creatingmembershipid(state, affiliated) {
-  var stateCode, affiliatedCode, record;
-  var result = {};
-  stateCode = await stateSchemaModel.findById(state).select("code -_id");
-  affiliatedCode = await affiliationSchemaModel
-    .findById(affiliated)
-    .select("code -_id");
-  record = await userSchemaModel.find({
-    stateCode: stateCode.code,
-    affiliationCode: affiliatedCode.code,
-  });
-  if (record.length == 0) {
-    result = {
-      statecode: stateCode.code,
-      affiliationcode: affiliatedCode.code,
-      membershipcode: "001",
-    };
-    return result;
-  } else {
-    var addNumber;
-    addNumber = parseInt(record[0].membershipNumber) + 1;
-    console.log(addNumber.toString().length);
-    if (addNumber.toString().length == 1) {
-      addNumber = "00" + addNumber;
-    } else if (addNumber.toString().length == 2) {
-      addNumber = "0" + addNumber;
-    } else {
-      addNumber = addNumber;
-    }
-    result = {
-      statecode: stateCode.code,
-      affiliationcode: affiliatedCode.code,
-      membershipcode: addNumber,
-    };
-    return result;
-  }
-}
 
 module.exports = {
   createUser: async (req, res) => {
@@ -448,4 +409,42 @@ async function createmembershippdf(name) {
   );
   var result = "uploads/Certificate/" + pdfName + ".pdf";
   return result;
+}
+
+async function creatingmembershipid(state, affiliated) {
+  var stateCode, affiliatedCode, record;
+  var result = {};
+  stateCode = await stateSchemaModel.findById(state).select("code -_id");
+  affiliatedCode = await affiliationSchemaModel
+    .findById(affiliated)
+    .select("code -_id");
+  record = await userSchemaModel.find({
+    stateCode: stateCode.code,
+    affiliationCode: affiliatedCode.code,
+  });
+  if (record.length == 0) {
+    result = {
+      statecode: stateCode.code,
+      affiliationcode: affiliatedCode.code,
+      membershipcode: "001",
+    };
+    return result;
+  } else {
+    var addNumber;
+    addNumber = parseInt(record[0].membershipNumber) + 1;
+    console.log(addNumber.toString().length);
+    if (addNumber.toString().length == 1) {
+      addNumber = "00" + addNumber;
+    } else if (addNumber.toString().length == 2) {
+      addNumber = "0" + addNumber;
+    } else {
+      addNumber = addNumber;
+    }
+    result = {
+      statecode: stateCode.code,
+      affiliationcode: affiliatedCode.code,
+      membershipcode: addNumber,
+    };
+    return result;
+  }
 }

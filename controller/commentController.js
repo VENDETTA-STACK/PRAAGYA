@@ -14,14 +14,14 @@ module.exports = {
       post_owner_id,
       post_id,
       comment,
-      user_name,
+      name,
       user_img,
     } = req.body;
     const commentModel = new commentSchemaModel({
       user_id: user_id,
       post_id: post_id,
       comment: comment,
-      user_name: user_name,
+      name: name,
       user_img: user_img,
     });
     await commentModel.save(async (err) => {
@@ -40,8 +40,8 @@ module.exports = {
 
           var payload = {
             notification: {
-              body: `${user_name} add Comment your post`,
-              title: "V Chat App",
+              body: `${name} add Comment your post`,
+              title: "Praagya APp",
             },
             data: {
               id: `${post_id}`,
@@ -64,7 +64,7 @@ module.exports = {
             });
           //save notif
           let notificationModel = new notificationsSchemaModel({
-            name: user_name,
+            name: name,
             title: "commented on your post",
             userImg: user_img,
             postId: post_id,

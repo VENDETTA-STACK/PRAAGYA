@@ -27,24 +27,11 @@ module.exports = {
   },
 
   getAffilation: async (req, res) => {
-    // const affilationModel = affiliationSchemaModel({
-    //   Name: "International Board",
-    // });
-    // affilationModel.save(async (err) => {
-    //   if (err) {
-    //     res.status(500).json({
-    //       error: true,
-    //       data: err,
-    //     });
-    //   } else {
-    //     res.status(200).json({ error: false, data: affilationModel });
-    //   }
-    // });
-    const city = await affiliationSchemaModel.find({});
-    if (!city) {
+    const affilation = await affiliationSchemaModel.find({});
+    if (!affilation) {
       res.status(500).json({ error: true, data: "no affilation found !" });
     } else {
-      res.status(200).json({ error: false, data: city });
+      res.status(200).json({ error: false, data: affilation });
     }
   },
 };
