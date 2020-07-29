@@ -105,30 +105,30 @@ module.exports = {
                 chatId: [],
               });
             } else {
-              var body =
-                "Dear " +
-                req.body.name +
-                "<br />" +
-                "Congratulation for being Member of " +
-                req.body.name +
-                " Family. Your Membership Id is " +
-                membershipNumber.statecode +
-                membershipNumber.affiliationcode +
-                "-" +
-                membershipNumber.membershipcode +
-                "." +
-                "<br />" +
-                "Kindly click the following link to genrate Membership Certificate";
-              body = encodeURI(body);
-              var url =
-                "http://promosms.itfuturz.com/vendorsms/pushsms.aspx?user=prclub&password=dns123&msisdn=" +
-                req.body.personalnumber +
-                "&sid=PRCLUB&msg=" +
-                body +
-                "&fl=0&gwid=2";
-              request.get(url, function (response) {
-                console.log(response);
-              });
+              // var body =
+              //   "Dear " +
+              //   req.body.name +
+              //   "<br />" +
+              //   "Congratulation for being Member of " +
+              //   req.body.name +
+              //   " Family. Your Membership Id is " +
+              //   membershipNumber.statecode +
+              //   membershipNumber.affiliationcode +
+              //   "-" +
+              //   membershipNumber.membershipcode +
+              //   "." +
+              //   "<br />" +
+              //   "Kindly click the following link to genrate Membership Certificate";
+              // body = encodeURI(body);
+              // var url =
+              //   "http://promosms.itfuturz.com/vendorsms/pushsms.aspx?user=prclub&password=dns123&msisdn=" +
+              //   req.body.personalnumber +
+              //   "&sid=PRCLUB&msg=" +
+              //   body +
+              //   "&fl=0&gwid=2";
+              // request.get(url, function (response) {
+              //   console.log(response);
+              // });
               res.status(200).json({ error: false, data: userModel });
             }
           });
