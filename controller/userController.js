@@ -290,7 +290,7 @@ module.exports = {
         schoolName: schoolName,
         designation: designation,
         qualification: qualification,
-        awards: awards,
+        awardsAndAchievements: awardsAndAchievements,
         skill1: skill1,
         skill2: skill2,
         skill3: skill3,
