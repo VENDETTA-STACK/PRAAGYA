@@ -41,6 +41,6 @@ userRouter.post(
 );
 userRouter.post("/update_bio", userController.update_bio);
 userRouter.post("/update_user_token", userController.updateAndAddUserToken);
-userRouter.get("/testing", userController.testing);
+// userRouter.get("/testing", userController.testing);
 
 module.exports = userRouter;

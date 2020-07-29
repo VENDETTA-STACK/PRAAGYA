@@ -4,7 +4,7 @@ const passwordHash = require("password-hash");
 var moment = require("moment-timezone");
 const fs = require("fs");
 const fetch = require("node-fetch");
-// var request = require("request");
+const axios = require("axios");
 const { userSchemaModel } = require("../models/userModel");
 const { postSchemaModel } = require("../models/postsModel");
 const { likeSchemaModel } = require("../models/likesModel");
@@ -14,6 +14,7 @@ const { affiliationSchemaModel } = require("../models/affiliationModel");
 const { degrees, PDFDocument, rgb, StandardFonts } = require("pdf-lib");
 const { worker } = require("cluster");
 const { Router } = require("express");
+const { urlencoded } = require("body-parser");
 async function creatingmembershipid(state, affiliated) {
   var stateCode, affiliatedCode, record;
   var result = {};
@@ -105,30 +106,28 @@ module.exports = {
                 chatId: [],
               });
             } else {
-              // var body =
-              //   "Dear " +
-              //   req.body.name +
-              //   "<br />" +
-              //   "Congratulation for being Member of " +
-              //   req.body.name +
-              //   " Family. Your Membership Id is " +
-              //   membershipNumber.statecode +
-              //   membershipNumber.affiliationcode +
-              //   "-" +
-              //   membershipNumber.membershipcode +
-              //   "." +
-              //   "<br />" +
-              //   "Kindly click the following link to genrate Membership Certificate";
-              // body = encodeURI(body);
-              // var url =
-              //   "http://promosms.itfuturz.com/vendorsms/pushsms.aspx?user=prclub&password=dns123&msisdn=" +
-              //   req.body.personalnumber +
-              //   "&sid=PRCLUB&msg=" +
-              //   body +
-              //   "&fl=0&gwid=2";
-              // request.get(url, function (response) {
-              //   console.log(response);
-              // });
+              var genreatedPDF = await createmembershippdf(req.body.name);
+              var body =
+                "Dear " +
+                req.body.name +
+                ", " +
+                "Congratulation for being Member of " +
+                req.body.name +
+                " Family. Your Membership Id is " +
+                membershipNumber.statecode +
+                membershipNumber.affiliationcode +
+                "-" +
+                membershipNumber.membershipcode +
+                "." +
+                "Kindly click the following link to genrate Membership Certificate.";
+              var url =
+                "http://promosms.itfuturz.com/vendorsms/pushsms.aspx?user=prclub&password=dns123&msisdn=" +
+                req.body.personalnumber +
+                "&sid=PRCLUB&msg=" +
+                body +
+                "&fl=0&gwid=2";
+              let getResponse = await axios.get(url);
+              console.log(getResponse.data.ErrorMessage);
               res.status(200).json({ error: false, data: userModel });
             }
           });
@@ -355,27 +354,9 @@ module.exports = {
       });
     }
   },
-  testing: async function (req, res) {
-    const url = "http://localhost:3000/uploads/Certificate/Certificate.pdf";
-    const existingPdfBytes = await fetch(url).then((res) => res.arrayBuffer());
-    const pdfDoc = await PDFDocument.load(existingPdfBytes);
-    const pages = pdfDoc.getPages();
-    const firstPage = pages[0];
-    // Get the width and height of the first page
-    const { width, height } = firstPage.getSize();
-    console.log(width);
-    console.log(height);
-    // Draw a string of text diagonally across the first page
-    firstPage.drawText("Sagar Patel", {
-      x: width / 2 - 50,
-      y: height - 540,
-      size: 20,
-      color: rgb(0.95, 0.1, 0.1),
-    });
-    // Serialize the PDFDocument to bytes (a Uint8Array)
-    const pdfBytes = await pdfDoc.save();
-    fs.writeFileSync("uploads/CertificateEdited/1.pdf", pdfBytes, "binary");
-  },
+  // testing: async function (req, res) {
+
+  // },
 };
 
 function createUserValidation(user) {
@@ -409,4 +390,33 @@ function idValidation(id) {
     user_id: Joi.required(),
   });
   return Joi.validate(id, schema);
+}
+
+async function createmembershippdf(name) {
+  const url = "http://localhost:3000/uploads/Certificate/Certificate.pdf";
+  const existingPdfBytes = await fetch(url).then((res) => res.arrayBuffer());
+  const pdfDoc = await PDFDocument.load(existingPdfBytes);
+  const pages = pdfDoc.getPages();
+  const firstPage = pages[0];
+  // Get the width and height of the first page
+  const { width, height } = firstPage.getSize();
+  console.log(width);
+  console.log(height);
+  // Draw a string of text diagonally across the first page
+  firstPage.drawText(name, {
+    x: width / 2 - 50,
+    y: height - 540,
+    size: 20,
+    color: rgb(0.95, 0.1, 0.1),
+  });
+  // Serialize the PDFDocument to bytes (a Uint8Array)
+  const pdfBytes = await pdfDoc.save();
+  let pdfName = name + Date.now();
+  fs.writeFileSync(
+    "uploads/CertificateEdited/" + pdfName + ".pdf",
+    pdfBytes,
+    "binary"
+  );
+  var result = "uploads/CertificateEdited/" + pdfName + ".pdf";
+  return result;
 }
