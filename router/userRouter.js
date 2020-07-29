@@ -1,5 +1,6 @@
 "use strict";
 //created by Hatem Ragap
+
 const express = require("express");
 const userRouter = new express.Router();
 const userController = require("../controller/userController");
@@ -40,5 +41,6 @@ userRouter.post(
 );
 userRouter.post("/update_bio", userController.update_bio);
 userRouter.post("/update_user_token", userController.updateAndAddUserToken);
+userRouter.get("/testing", userController.testing);
 
 module.exports = userRouter;
