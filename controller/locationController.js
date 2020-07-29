@@ -41,6 +41,7 @@ module.exports = {
     //     res.status(200).json({ error: false, data: affilationModel });
     //   }
     // });
+    var key = req.body.type;
     const city = await affiliationSchemaModel.find({});
     if (!city) {
       res.status(500).json({ error: true, data: "no affilation found !" });
