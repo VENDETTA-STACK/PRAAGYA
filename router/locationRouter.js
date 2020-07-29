@@ -4,8 +4,8 @@ const express = require("express");
 const locationRouter = new express.Router();
 const locationController = require("../controller/locationController");
 
-locationRouter.get("/country", locationController.getCountry);
+locationRouter.post("/country", locationController.getCountry);
 locationRouter.post("/state", locationController.getState);
-locationRouter.get("/affiliation", locationController.getAffilation);
+locationRouter.post("/affiliation", locationController.getAffilation);
 
 module.exports = locationRouter;
