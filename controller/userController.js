@@ -394,7 +394,8 @@ function idValidation(id) {
 }
 
 async function createmembershippdf(name) {
-  const url = "http://localhost:3000/uploads/Certificate/Certificate.pdf";
+  const url =
+    "https://urgentneed.herokuapp.com/uploads/Certificate/Certificate.pdf";
   const existingPdfBytes = await fetch(url).then((res) => res.arrayBuffer());
   const pdfDoc = await PDFDocument.load(existingPdfBytes);
   const pages = pdfDoc.getPages();
