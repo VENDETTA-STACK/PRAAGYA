@@ -415,10 +415,10 @@ async function createmembershippdf(name) {
   const pdfBytes = await pdfDoc.save();
   let pdfName = name + Date.now();
   fs.writeFileSync(
-    "uploads/CertificateEdited/" + pdfName + ".pdf",
+    "uploads/Certificate/" + pdfName + ".pdf",
     pdfBytes,
     "binary"
   );
-  var result = "uploads/CertificateEdited/" + pdfName + ".pdf";
+  var result = "uploads/Certificate/" + pdfName + ".pdf";
   return result;
 }
