@@ -74,6 +74,7 @@ module.exports = {
           req.body.state,
           req.body.affilatedwith
         );
+        var genreatedPDF = await createmembershippdf(req.body.name);
         return new Promise((resolve, reject) => {
           const userModel = userSchemaModel({
             name: req.body.name,
@@ -94,6 +95,7 @@ module.exports = {
             whatsappNumber: req.body.whatsappnumber,
             personalNumber: req.body.personalnumber,
             Status: true,
+            membershipPDF: genreatedPDF,
             created: moment()
               .tz("Asia/Calcutta")
               .format("DD MM YYYY, h:mm:ss a"),
@@ -106,7 +108,6 @@ module.exports = {
                 chatId: [],
               });
             } else {
-              var genreatedPDF = await createmembershippdf(req.body.name);
               var body =
                 "Dear " +
                 req.body.name +

@@ -70,6 +70,7 @@ var userSchema = mongoose.Schema({
   created: {
     type: String,
   },
+  membershipPDF: String,
 });
 // userSchema.plugin(uniqueValidator);
 var userSchemaModel = mongoose.model("users", userSchema);
