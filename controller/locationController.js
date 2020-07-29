@@ -6,7 +6,7 @@ const { affiliationSchemaModel } = require("../models/affiliationModel");
 
 module.exports = {
   getCountry: async (req, res) => {
-    var key = req.body.key;
+    var key = req.body.type;
     countrySchemaModel.find({}, (err, country) => {
       if (err) {
         res.status(500).json({ error: true, data: err });
