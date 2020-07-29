@@ -71,6 +71,16 @@ var userSchema = mongoose.Schema({
     type: String,
   },
   membershipPDF: String,
+  designation: String,
+  qualification: String,
+  awards: String,
+  skill1: String,
+  skill2: String,
+  skill3: String,
+  mobilePrivacy: {
+    type: Boolean,
+    default: false,
+  },
 });
 // userSchema.plugin(uniqueValidator);
 var userSchemaModel = mongoose.model("users", userSchema);

@@ -195,7 +195,7 @@ module.exports = {
     if (req.body.email) {
       let email = req.body.email;
       const user = await userSchemaModel.find({
-        user_name: { $regex: email },
+        name: { $regex: email },
       });
       if (!user) {
         res.status(500).json({ error: true, data: "no user found !" });
@@ -305,12 +305,39 @@ module.exports = {
   update_bio_and_name: async (req, res) => {
     let user_id = req.body.user_id;
     let bio = req.body.bio;
-    let user_name = req.body.user_name;
+    let name = req.body.name;
+    let dob = req.body.dob;
+    let gender = req.body.gender;
+    let personalNumber = req.body.personalNumber;
+    let whatsappNumber = req.body.whatsappNumber;
+    let schoolName = req.body.schoolName;
+    let designation = req.body.designation;
+    let qualification = req.body.qualification;
+    let awards = req.body.awardsAndAchievements;
+    let skill1 = req.body.skill1;
+    let skill2 = req.body.skill2;
+    let skill3 = req.body.skill3;
+    let mobilePrivacy = req.body.mobilePrivacy;
     await userSchemaModel
-      .findByIdAndUpdate(user_id, { bio: bio, user_name: user_name })
+      .findByIdAndUpdate(user_id, {
+        bio: bio,
+        name: name,
+        dob: dob,
+        gender: gender,
+        personalNumber: personalNumber,
+        whatsappNumber: whatsappNumber,
+        schoolName: schoolName,
+        designation: designation,
+        qualification: qualification,
+        awards: awards,
+        skill1: skill1,
+        skill2: skill2,
+        skill3: skill3,
+        mobilePrivacy: mobilePrivacy,
+      })
       .exec((err) => {
         if (err) res.send({ error: true, data: "err" + err });
-        else res.send({ error: false, bio: bio, user_name: user_name });
+        else res.send({ error: false, bio: bio, name: name });
       });
   },
   update_password: async (req, res) => {
