@@ -73,7 +73,7 @@ var userSchema = mongoose.Schema({
   membershipPDF: String,
   designation: String,
   qualification: String,
-  awards: String,
+  awardsAndAchievements: String,
   skill1: String,
   skill2: String,
   skill3: String,
