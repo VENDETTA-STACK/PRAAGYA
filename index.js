@@ -1,7 +1,7 @@
 //created by Hatem Ragap
-const app = require('./app');
+const app = require("./app");
 
-const port = process.env.PORT || 3000 ;
+const port = process.env.PORT || 3000;
 
 const socketIO = require("socket.io");
 const server = require("http").createServer(app);
@@ -14,14 +14,10 @@ require("./sokets/convs.socket")(io);
 require("./sokets/message.socket")(io);
 require("./sokets/publicRoomsSocket")(io);
 
-
-
-app.get('/',function(req,res){
-    res.send("server work");
+app.get("/", function (req, res) {
+  res.send("server work");
 });
 
-
-
 server.listen(port, () => {
-    console.log('Running on port 3000...');
+  console.log("Running on port 3000...");
 });
