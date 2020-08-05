@@ -17,12 +17,12 @@ const { worker } = require("cluster");
 module.exports = {
   createUser: async (req, res) => {
     console.log(req.body.name);
-    // const user = {
-    //   name: req.body.name,
-    //   email: req.body.email,
-    //   password: req.body.password,
-    // };
-    // const { error } = createUserValidation(user);
+    const user = {
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+    };
+    const { error } = createUserValidation(user);
     if (!error) {
       var email, mobile;
       email = await userSchemaModel.find({ email: req.body.email });
@@ -348,14 +348,14 @@ module.exports = {
   // },
 };
 
-// function createUserValidation(user) {
-//   const schema = Joi.object().keys({
-//     name: Joi.string().min(5).max(30).required(),
-//     email: Joi.string().email({ minDomainAtoms: 2 }).max(30).required(),
-//     password: Joi.string().min(6).max(30).required(),
-//   });
-//   return Joi.validate(user, schema);
-// }
+function createUserValidation(user) {
+  const schema = Joi.object().keys({
+    name: Joi.string().min(5).max(30).required(),
+    email: Joi.string().email({ minDomainAtoms: 2 }).max(30).required(),
+    password: Joi.string().min(6).max(30).required(),
+  });
+  return Joi.validate(user, schema);
+}
 
 function updatePasswordValidation(user) {
   const schema = Joi.object().keys({
