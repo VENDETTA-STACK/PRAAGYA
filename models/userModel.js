@@ -64,19 +64,19 @@ var userSchema = mongoose.Schema({
   },
   bio: {
     type: String,
-    default: "Hi iam using Pragya App",
+    default: "Hi iam using Praagya App",
   },
 
   created: {
     type: String,
   },
   membershipPDF: String,
-  designation: String,
-  qualification: String,
-  awardsAndAchievements: String,
-  skill1: String,
-  skill2: String,
-  skill3: String,
+  designation: { type: String, default: "" },
+  qualification: { type: String, default: "" },
+  awardsAndAchievements: { type: String, default: "" },
+  skill1: { type: String, default: "" },
+  skill2: { type: String, default: "" },
+  skill3: { type: String, default: "" },
   mobilePrivacy: {
     type: Boolean,
     default: false,

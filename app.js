@@ -32,7 +32,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // public place for img
-app.use("/uploads", express.static("uploads"));
+app.use("/api/uploads", express.static("uploads"));
 
 // parse an HTML body into a string
 app.use(bodyParser.json());
