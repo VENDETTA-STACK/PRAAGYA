@@ -382,7 +382,7 @@ function idValidation(id) {
 }
 
 async function createmembershippdf(name) {
-  const url = "http://15.206.249.190/uploads/Certificate/Certificate.pdf";
+  const url = "http://15.206.249.190/api/uploads/Certificate/Certificate.pdf";
   const existingPdfBytes = await fetch(url).then((res) => res.arrayBuffer());
   const pdfDoc = await PDFDocument.load(existingPdfBytes);
   const pages = pdfDoc.getPages();
