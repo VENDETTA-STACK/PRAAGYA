@@ -16,7 +16,6 @@ const { worker } = require("cluster");
 
 module.exports = {
   createUser: async (req, res) => {
-    console.log(req.body.name);
     const user = {
       name: req.body.name,
       email: req.body.email,
@@ -69,27 +68,27 @@ module.exports = {
                 chatId: [],
               });
             } else {
-              var body =
-                "Dear " +
-                req.body.name +
-                ", " +
-                "Congratulation for being Member of " +
-                req.body.name +
-                " Family. Your Membership Id is " +
-                membershipNumber.statecode +
-                membershipNumber.affiliationcode +
-                "-" +
-                membershipNumber.membershipcode +
-                "." +
-                "Kindly click the following link to genrate Membership Certificate.";
-              var url =
-                "http://promosms.itfuturz.com/vendorsms/pushsms.aspx?user=prclub&password=dns123&msisdn=" +
-                req.body.personalnumber +
-                "&sid=PRCLUB&msg=" +
-                body +
-                "&fl=0&gwid=2";
-              let getResponse = await axios.get(url);
-              console.log(getResponse.data.ErrorMessage);
+              // var body =
+              //   "Dear " +
+              //   req.body.name +
+              //   ", " +
+              //   "Congratulation for being Member of " +
+              //   req.body.name +
+              //   " Family. Your Membership Id is " +
+              //   membershipNumber.statecode +
+              //   membershipNumber.affiliationcode +
+              //   "-" +
+              //   membershipNumber.membershipcode +
+              //   "." +
+              //   "Kindly click the following link to genrate Membership Certificate.";
+              // var url =
+              //   "http://promosms.itfuturz.com/vendorsms/pushsms.aspx?user=prclub&password=dns123&msisdn=" +
+              //   req.body.personalnumber +
+              //   "&sid=PRCLUB&msg=" +
+              //   body +
+              //   "&fl=0&gwid=2";
+              // let getResponse = await axios.get(url);
+              // console.log(getResponse.data.ErrorMessage);
               res.status(200).json({ error: false, data: userModel });
             }
           });
@@ -429,9 +428,9 @@ async function creatingmembershipid(state, affiliated) {
     };
     return result;
   } else {
+    console.log(record[record.length - 1].membershipNumber);
     var addNumber;
-    addNumber = parseInt(record[0].membershipNumber) + 1;
-    console.log(addNumber.toString().length);
+    addNumber = parseInt(record[record.length - 1].membershipNumber) + 1;
     if (addNumber.toString().length == 1) {
       addNumber = "00" + addNumber;
     } else if (addNumber.toString().length == 2) {
