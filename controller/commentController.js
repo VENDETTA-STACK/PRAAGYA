@@ -9,19 +9,26 @@ var admin = require("firebase-admin");
 
 module.exports = {
   createComment: async (req, res) => {
+    
     const {
       user_id,
       post_owner_id,
       post_id,
       comment,
-      name,
+      //old
+      //name
+      //new bcoz req from app side is user_name kd
+      user_name,
       user_img,
     } = req.body;
     const commentModel = new commentSchemaModel({
       user_id: user_id,
       post_id: post_id,
       comment: comment,
-      name: name,
+      //old
+      //name: name,
+      //new  bcoz req we are passing varaible of user_name kd
+      name : user_name,
       user_img: user_img,
     });
     await commentModel.save(async (err) => {
@@ -41,7 +48,7 @@ module.exports = {
           var payload = {
             notification: {
               body: `${name} add Comment your post`,
-              title: "Praagya APp",
+              title: "Praagya App",
             },
             data: {
               id: `${post_id}`,

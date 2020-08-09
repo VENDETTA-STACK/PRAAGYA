@@ -82,7 +82,7 @@ module.exports = {
                 "-" +
                 membershipNumber.membershipcode +
                 "." +
-                "Kindly copy the following link to genrate Membership Certificate. http://15.206.249.190/api/uploads/Certificate/" + genreatedPDF;
+                "Kindly copy the following link to genrate Membership Certificate. http://15.206.249.190/api/uploads/Certificate/" + genreatedPDFv;
               var url =
                   "http://websms.mitechsolution.com/api/push.json?apikey=5ea7f55b01122&route=vtrans&sender=PNDDEL&mobileno="+ req.body.personalnumber +"&text="+ body;
               let getResponse = await axios.get(url);
