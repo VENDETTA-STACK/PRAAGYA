@@ -31,6 +31,7 @@ userRouter.post(
   userController.get_likes_posts_comments_counts
 ); // /api/user/login
 userRouter.post("/get", userController.getUser); // /api/user/get
+userRouter.post("/webget", userController.getUserWeb); // /api/user/get
 userRouter.post("/getUserByEmail", userController.getUserByEmail); // /api/user/get
 userRouter.post("/getUsers", userController.getUsers); // /api/user/get
 userRouter.post("/img", upload.single("img"), userController.addUserImg);

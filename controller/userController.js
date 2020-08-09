@@ -163,6 +163,33 @@ module.exports = {
       res.send({ error: true, data: detail });
     }
   },
+  getUserWeb: async (req, res) => {
+    const { error } = idValidation(req.body);
+    if (!error) {
+      let id = `${req.body.user_id}`;
+      const user = await userSchemaModel.findById(id);
+      .populate({
+        path: "country",
+        select: "Name",
+      })
+      .populate({
+        path: "state",
+        select: "name",
+      })
+      .populate({
+        path: "affilatedWith",
+        select: "Name",
+      });
+      if (!user) {
+        res.status(500).json({ error: true, data: "no user found !" });
+      } else {
+        res.status(200).json({ error: false, data: user });
+      }
+    } else {
+      let detail = error.details[0].message;
+      res.send({ error: true, data: detail });
+    }
+  },
   getUserByEmail: async (req, res) => {
     if (req.body.email) {
       let email = req.body.email;
