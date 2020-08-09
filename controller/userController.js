@@ -68,27 +68,25 @@ module.exports = {
                 chatId: [],
               });
             } else {
-              // var body =
-              //   "Dear " +
-              //   req.body.name +
-              //   ", " +
-              //   "Congratulation for being Member of " +
-              //   req.body.name +
-              //   " Family. Your Membership Id is " +
-              //   membershipNumber.statecode +
-              //   membershipNumber.affiliationcode +
-              //   "-" +
-              //   membershipNumber.membershipcode +
-              //   "." +
-              //   "Kindly click the following link to genrate Membership Certificate.";
-              // var url =
-              //   "http://promosms.itfuturz.com/vendorsms/pushsms.aspx?user=prclub&password=dns123&msisdn=" +
-              //   req.body.personalnumber +
-              //   "&sid=PRCLUB&msg=" +
-              //   body +
-              //   "&fl=0&gwid=2";
-              // let getResponse = await axios.get(url);
-              // console.log(getResponse.data.ErrorMessage);
+              // for sending message
+              // sms URL -http://websms.mitechsolution.com/api/push.json?apikey=5ea7f55b01122&route=vtrans&sender=PNDDEL&mobileno=8347766166&text=Testingg%20%20
+              var body =
+                "Dear " +
+                req.body.name +
+                ", " +
+                "Congratulation for being Member of " +
+                req.body.name +
+                " Family. Your Membership Id is " +
+                membershipNumber.statecode +
+                membershipNumber.affiliationcode +
+                "-" +
+                membershipNumber.membershipcode +
+                "." +
+                "Kindly copy the following link to genrate Membership Certificate. http://15.206.249.190/api/uploads/Certificate/" + genreatedPDF;
+              var url =
+                  "http://websms.mitechsolution.com/api/push.json?apikey=5ea7f55b01122&route=vtrans&sender=PNDDEL&mobileno="+ req.body.personalnumber +"&text="+ body;
+              let getResponse = await axios.get(url);
+              console.log(getResponse.data.ErrorMessage);
               res.status(200).json({ error: false, data: userModel });
             }
           });
@@ -383,10 +381,7 @@ module.exports = {
         data: " user id is required ! or token ",
       });
     }
-  },
-  // testing: async function (req, res) {
-
-  // },
+  },  
 };
 
 function createUserValidation(user) {
