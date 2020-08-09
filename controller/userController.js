@@ -163,6 +163,7 @@ module.exports = {
       res.send({ error: true, data: detail });
     }
   },
+
   getUserWeb: async (req, res) => {
     const { error } = idValidation(req.body);
     if (!error) {
@@ -190,6 +191,7 @@ module.exports = {
       res.send({ error: true, data: detail });
     }
   },
+
   getUserByEmail: async (req, res) => {
     if (req.body.email) {
       let email = req.body.email;
