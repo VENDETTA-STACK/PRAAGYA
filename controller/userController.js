@@ -70,7 +70,7 @@ module.exports = {
             } else {
               // for sending message
               // sms URL -http://websms.mitechsolution.com/api/push.json?apikey=5ea7f55b01122&route=vtrans&sender=PNDDEL&mobileno=8347766166&text=Testingg%20%20
-              var body =
+             /* var body =
                 "Dear " +
                 req.body.name +
                 ", " +
@@ -88,6 +88,7 @@ module.exports = {
               let getResponse = await axios.get(url);
               console.log(getResponse.data.ErrorMessage);
               res.status(200).json({ error: false, data: userModel });
+            */
             }
           });
         });
