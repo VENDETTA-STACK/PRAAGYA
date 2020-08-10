@@ -21,6 +21,7 @@ module.exports = {
       email: req.body.email,
       password: req.body.password,
     };
+    console.log("Hello");
     const { error } = createUserValidation(user);
     if (!error) {
       var email, mobile;
@@ -34,7 +35,7 @@ module.exports = {
           req.body.state,
           req.body.affilatedwith
         );
-        var genreatedPDF = await createmembershippdf(req.body.name);
+       // var genreatedPDF = await createmembershippdf(req.body.name);
         return new Promise((resolve, reject) => {
           const userModel = userSchemaModel({
             name: req.body.name,
@@ -68,6 +69,7 @@ module.exports = {
                 chatId: [],
               });
             } else {
+              res.send.json({ error: true, data: "Register Sucessfuly" });
               // for sending message
               // sms URL -http://websms.mitechsolution.com/api/push.json?apikey=5ea7f55b01122&route=vtrans&sender=PNDDEL&mobileno=8347766166&text=Testingg%20%20
              /* var body =
