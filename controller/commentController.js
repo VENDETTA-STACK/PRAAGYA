@@ -16,9 +16,9 @@ module.exports = {
       post_id,
       comment,
       //old
-      name,
+      //name
       //new bcoz req from app side is user_name kd
-      //user_name,
+      user_name,
       user_img,
     } = req.body;
     const commentModel = new commentSchemaModel({
@@ -28,7 +28,7 @@ module.exports = {
       //old
       //name: name,
       //new  bcoz req we are passing varaible of user_name kd
-      user_name : name,
+      name : user_name,
       user_img: user_img,
     });
     await commentModel.save(async (err) => {
