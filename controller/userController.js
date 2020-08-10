@@ -15,102 +15,102 @@ const { degrees, PDFDocument, rgb, StandardFonts } = require("pdf-lib");
 const { worker } = require("cluster");
 
 module.exports = {
-  createUser: async (req, res) => {
-    const user = {
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-    };
-    const { error } = createUserValidation(user);
-    if (!error) {
-      var email, mobile;
-      email = await userSchemaModel.find({ email: req.body.email });
-      mobile = await userSchemaModel.find({
-        personalNumber: req.body.personalnumber,
-      });
-      if (email.length == 0 && mobile.length == 0) {
-        const hashedPassword = await passwordHash.generate(req.body.password);
-        var membershipNumber = await creatingmembershipid(
-          req.body.state,
-          req.body.affilatedwith
-        );
-        var genreatedPDF = await createmembershippdf(req.body.name);
-        return new Promise((resolve, reject) => {
-          const userModel = userSchemaModel({
-            name: req.body.name,
-            email: req.body.email,
-            password: hashedPassword,
-            gender: req.body.gender,
-            dob: req.body.dob,
-            country: req.body.country,
-            state: req.body.state,
-            city: req.body.city,
-            stateCode: membershipNumber.statecode,
-            affiliationCode: membershipNumber.affiliationcode,
-            membershipNumber: membershipNumber.membershipcode,
-            schoolName: req.body.schoolname,
-            schoolLocation: req.body.schoollocation,
-            affilatedWith: req.body.affilatedwith,
-            afillatedNumber: req.body.affilatednumber,
-            whatsappNumber: req.body.whatsappnumber,
-            personalNumber: req.body.personalnumber,
-            Status: true,
-            membershipPDF: genreatedPDF,
-            created: moment()
-              .tz("Asia/Calcutta")
-              .format("DD MM YYYY, h:mm:ss a"),
-          });
-          userModel.save(async (err) => {
-            if (err) {
-              res.status(500).json({
-                error: true,
-                data: "email already used choose another" + err,
-                chatId: [],
-              });
-            } else {
-              res.status(500).json({
-                error: true,
-                data: "Register Sucessfully",
-               });
-              // for sending message
-              // sms URL -http://websms.mitechsolution.com/api/push.json?apikey=5ea7f55b01122&route=vtrans&sender=PNDDEL&mobileno=8347766166&text=Testingg%20%20
-              // var body =
-              //   "Dear " +
-              //   req.body.name +
-              //   ", " +
-              //   "Congratulation for being Member of " +
-              //   req.body.name +
-              //   " Family. Your Membership Id is " +
-              //   membershipNumber.statecode +
-              //   membershipNumber.affiliationcode +
-              //   "-" +
-              //   membershipNumber.membershipcode +
-              //   "." +
-              //   "Kindly copy the following link to genrate Membership Certificate. http://15.206.249.190/api/uploads/Certificate/" + genreatedPDFv;
-              // var url =
-              //     "http://websms.mitechsolution.com/api/push.json?apikey=5ea7f55b01122&route=vtrans&sender=PNDDEL&mobileno="+ req.body.personalnumber +"&text="+ body;
-              // let getResponse = await axios.get(url);
-              // console.log(getResponse.data.ErrorMessage);
-              res.status(200).json({ error: false, data: userModel });
-            }
-          });
-        });
-      } else {
-        if (email.length == 1 && mobile.length == 1) {
-          res.send({ error: true, data: "Email and Mobile already taken" });
-        } else {
-          if (email.length == 1) {
-            res.send({ error: true, data: "Email already taken" });
-          } else {
-            res.send({ error: true, data: "Mobile already taken" });
-          }
-        }
-      }
-    } else {
-      let detail = error.details[0].message;
-      res.send({ error: true, data: detail });
-    }
-  },
+  // createUser: async (req, res) => {
+  //   const user = {
+  //     name: req.body.name,
+  //     email: req.body.email,
+  //     password: req.body.password,
+  //   };
+  //   const { error } = createUserValidation(user);
+  //   if (!error) {
+  //     var email, mobile;
+  //     email = await userSchemaModel.find({ email: req.body.email });
+  //     mobile = await userSchemaModel.find({
+  //       personalNumber: req.body.personalnumber,
+  //     });
+  //     if (email.length == 0 && mobile.length == 0) {
+  //       const hashedPassword = await passwordHash.generate(req.body.password);
+  //       var membershipNumber = await creatingmembershipid(
+  //         req.body.state,
+  //         req.body.affilatedwith
+  //       );
+  //       var genreatedPDF = await createmembershippdf(req.body.name);
+  //       return new Promise((resolve, reject) => {
+  //         const userModel = userSchemaModel({
+  //           name: req.body.name,
+  //           email: req.body.email,
+  //           password: hashedPassword,
+  //           gender: req.body.gender,
+  //           dob: req.body.dob,
+  //           country: req.body.country,
+  //           state: req.body.state,
+  //           city: req.body.city,
+  //           stateCode: membershipNumber.statecode,
+  //           affiliationCode: membershipNumber.affiliationcode,
+  //           membershipNumber: membershipNumber.membershipcode,
+  //           schoolName: req.body.schoolname,
+  //           schoolLocation: req.body.schoollocation,
+  //           affilatedWith: req.body.affilatedwith,
+  //           afillatedNumber: req.body.affilatednumber,
+  //           whatsappNumber: req.body.whatsappnumber,
+  //           personalNumber: req.body.personalnumber,
+  //           Status: true,
+  //           membershipPDF: genreatedPDF,
+  //           created: moment()
+  //             .tz("Asia/Calcutta")
+  //             .format("DD MM YYYY, h:mm:ss a"),
+  //         });
+  //         userModel.save(async (err) => {
+  //           if (err) {
+  //             res.status(500).json({
+  //               error: true,
+  //               data: "email already used choose another" + err,
+  //               chatId: [],
+  //             });
+  //           } else {
+  //             res.status(500).json({
+  //               error: true,
+  //               data: "Register Sucessfully",
+  //              });
+  //             // for sending message
+  //             // sms URL -http://websms.mitechsolution.com/api/push.json?apikey=5ea7f55b01122&route=vtrans&sender=PNDDEL&mobileno=8347766166&text=Testingg%20%20
+  //             // var body =
+  //             //   "Dear " +
+  //             //   req.body.name +
+  //             //   ", " +
+  //             //   "Congratulation for being Member of " +
+  //             //   req.body.name +
+  //             //   " Family. Your Membership Id is " +
+  //             //   membershipNumber.statecode +
+  //             //   membershipNumber.affiliationcode +
+  //             //   "-" +
+  //             //   membershipNumber.membershipcode +
+  //             //   "." +
+  //             //   "Kindly copy the following link to genrate Membership Certificate. http://15.206.249.190/api/uploads/Certificate/" + genreatedPDFv;
+  //             // var url =
+  //             //     "http://websms.mitechsolution.com/api/push.json?apikey=5ea7f55b01122&route=vtrans&sender=PNDDEL&mobileno="+ req.body.personalnumber +"&text="+ body;
+  //             // let getResponse = await axios.get(url);
+  //             // console.log(getResponse.data.ErrorMessage);
+  //             res.status(200).json({ error: false, data: userModel });
+  //           }
+  //         });
+  //       });
+  //     } else {
+  //       if (email.length == 1 && mobile.length == 1) {
+  //         res.send({ error: true, data: "Email and Mobile already taken" });
+  //       } else {
+  //         if (email.length == 1) {
+  //           res.send({ error: true, data: "Email already taken" });
+  //         } else {
+  //           res.send({ error: true, data: "Mobile already taken" });
+  //         }
+  //       }
+  //     }
+  //   } else {
+  //     let detail = error.details[0].message;
+  //     res.send({ error: true, data: detail });
+  //   }
+  // },
   loginUser: async (req, res) => {
     const { error } = loginUserValidation(req.body);
     if (!error) {
