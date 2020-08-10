@@ -11,7 +11,10 @@ var commentSchema = mongoose.Schema({
         ref: 'users',
         trim: true,
     },
-    user_name: {
+    //before 
+    //user_name: {
+    //new 
+    name: {
         type: String,
         trim: true,
     },

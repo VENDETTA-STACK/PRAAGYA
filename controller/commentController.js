@@ -28,7 +28,7 @@ module.exports = {
       //old
       //name: name,
       //new  bcoz req we are passing varaible of user_name kd
-      name : user_name,
+      user_name : user_name,
       user_img: user_img,
     });
     await commentModel.save(async (err) => {
