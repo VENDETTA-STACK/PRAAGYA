@@ -3,7 +3,8 @@ const app = require("./app");
 //before
 //const port = process.egitnv.PORT || 3000;
 //after kd - 17/08/2020
-port = 8080;
+//const port = 8080;
+const port = 3000;
 
 const socketIO = require("socket.io");
 const server = require("http").createServer(app);
@@ -21,5 +22,5 @@ app.get("/", function (req, res) {
 });
 
 server.listen(port, () => {
-  console.log("Running on port 3000...");
+  console.log("Running on port :"+port);
 });
