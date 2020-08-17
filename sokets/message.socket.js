@@ -46,7 +46,6 @@ module.exports = io => {
         socket.on("new_message", async msg => {
             //new code added as per the reponse - daksh - 17/08/2020
             let objectValue = msg;
-            //console.log(objectValue);
             let sender_id = objectValue["sender_id"];
             let sender_name = objectValue["sender_name"];
             let token = objectValue["token"];
