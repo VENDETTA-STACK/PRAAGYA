@@ -9,7 +9,7 @@ var admin = require("firebase-admin");
 
 module.exports = {
   createComment: async (req, res) => {
-    
+      
     const {
       user_id,
       post_owner_id,

@@ -1,7 +1,9 @@
 //created by Hatem Ragap
 const app = require("./app");
-
-const port = process.env.PORT || 3000;
+//before
+//const port = process.egitnv.PORT || 3000;
+//after kd - 17/08/2020
+port = 8080;
 
 const socketIO = require("socket.io");
 const server = require("http").createServer(app);
