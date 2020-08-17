@@ -9,6 +9,7 @@ module.exports = io => {
     var admin = require("firebase-admin");
 
     io.of("/api/message").on("connection", socket => {
+         
         socket.on("makeLastMessageAsSeen", async msg => {
             let objectValue = await JSON.parse(msg);
             let chatId = objectValue["chatId"];
@@ -43,10 +44,10 @@ module.exports = io => {
                 socket.to(chatId).broadcast.emit("onDeleted", false);
             }
         });
+        //new code added as per the reponse - daksh - 17/08/2020
         socket.on("new_message", async msg => {
-            //new code added as per the reponse - daksh - 17/08/2020
-            let objectValue = msg;
-            //console.log(objectValue);
+            let objectValue = JSON.parse(msg);
+           // let objectValue = msg;
             let sender_id = objectValue["sender_id"];
             let sender_name = objectValue["sender_name"];
             let token = objectValue["token"];
