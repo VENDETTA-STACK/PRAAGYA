@@ -124,6 +124,7 @@ module.exports = {
     if (!error) {
       const { email, password } = req.body;
       const user = await userSchemaModel.findOne({ email });
+      console.log(user);
       if (!user) {
         res
           .status(500)
@@ -139,7 +140,10 @@ module.exports = {
         if (user.Status == false) {
           res.status(500).json({ error: true, data: "User is blocked." });
         }
-        res.status(200).json({ error: false, data: user });
+        else{
+          res.status(200).json({ error: false, data: user });
+        }        
+        
       }
     } else {
       let detail = error.details[0].message;
@@ -219,7 +223,7 @@ module.exports = {
     }
   },
   getUsers: async (req, res) => {
-    const user = await userSchemaModel.find().sort({ created: -1 });
+    const user = await userSchemaModel.find({Status:true}).sort({ created: -1 });
     if (!user) {
       res.status(500).json({ error: true, data: "no user found !" });
     } else {
@@ -228,6 +232,7 @@ module.exports = {
   },
   verifyUser: async (req, res) => {
     /* 0 means false and 1 means true */
+
     var id = req.body.Id;
     var status = req.body.Status;
     var sts = status == 0 ? true : false;
@@ -394,6 +399,12 @@ module.exports = {
       });
     }
   },  
+
+  blockUser: async function(req, res){
+    var user_id = req.body.user_id;
+    await userSchemaModel.findByIdAndUpdate(user_id,{Status:false});
+    res.status(500).json({ error: true, data: "User is blocked." });
+  },
 };
 
 function createUserValidation(user) {

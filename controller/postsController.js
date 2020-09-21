@@ -43,6 +43,7 @@ module.exports = {
 
     if (!error) {
       let results = {};
+      
       const { user_id, page } = req.body;
 
       const page_as_int = parseInt(page);
@@ -116,7 +117,6 @@ module.exports = {
 
   deletePost: async (req, res) => {
     const { post_id } = req.body;
-
     await postSchemaModel.findByIdAndRemove(post_id);
     await commentSchemaModel.find({ post_id: post_id }).remove();
     await likeSchemaModel.find({ post_id: post_id }).remove();

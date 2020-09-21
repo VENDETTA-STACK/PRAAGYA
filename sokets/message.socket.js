@@ -46,13 +46,8 @@ module.exports = io => {
         });
         //new code added as per the reponse - daksh - 17/08/2020
         socket.on("new_message", async msg => {
-<<<<<<< HEAD
-            //new code added as per the reponse - daksh - 17/08/2020
-            let objectValue = msg;
-=======
             let objectValue = JSON.parse(msg);
            // let objectValue = msg;
->>>>>>> f2fa4d873a13a8ae2d1904c043bc372f1724ef92
             let sender_id = objectValue["sender_id"];
             let sender_name = objectValue["sender_name"];
             let token = objectValue["token"];
