@@ -224,6 +224,7 @@ module.exports = {
   },
   getUsers: async (req, res) => {
     const user = await userSchemaModel.find({Status:true}).sort({ created: -1 });
+    console.log(user.length);
     if (!user) {
       res.status(500).json({ error: true, data: "no user found !" });
     } else {
