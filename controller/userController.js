@@ -28,8 +28,9 @@ module.exports = {
       mobile = await userSchemaModel.find({
         personalNumber: req.body.personalnumber,
       });
-      if (email.length == 0 && mobile.length == 0) {
-        const hashedPassword = await passwordHash.generate(req.body.password);
+      //if (email.length == 0 && mobile.length == 0) {
+        if (email.length == 0) {  
+      const hashedPassword = await passwordHash.generate(req.body.password);
         var membershipNumber = await creatingmembershipid(
           req.body.state,
           req.body.affilatedwith
@@ -224,7 +225,6 @@ module.exports = {
   },
   getUsers: async (req, res) => {
     const user = await userSchemaModel.find({Status:true}).sort({ created: -1 });
-    console.log(user.length);
     if (!user) {
       res.status(500).json({ error: true, data: "no user found !" });
     } else {
