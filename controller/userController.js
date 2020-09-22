@@ -25,12 +25,12 @@ module.exports = {
     if (!error) {
       var email, mobile;
       email = await userSchemaModel.find({ email: req.body.email });
-      mobile = await userSchemaModel.find({
-        personalNumber: req.body.personalnumber,
-      });
-      //if (email.length == 0 && mobile.length == 0) {
-        if (email.length == 0) {  
-      const hashedPassword = await passwordHash.generate(req.body.password);
+      // mobile = await userSchemaModel.find({
+      //   personalNumber: req.body.personalnumber,
+      // });
+      //if (email.length == 0 && mobile.length == 0) {}
+        if (email.length == 0) {
+        const hashedPassword = await passwordHash.generate(req.body.password);
         var membershipNumber = await creatingmembershipid(
           req.body.state,
           req.body.affilatedwith
@@ -105,14 +105,16 @@ module.exports = {
           });
         });
       } else {
-        if (email.length == 1 && mobile.length == 1) {
-          res.send({ error: true, data: "Email and Mobile already taken" });
+       // if (email.length == 1 && mobile.length == 1) {
+        if (email.length == 1 ) {
+          res.send({ error: true, data: "Email already taken" });
         } else {
           if (email.length == 1) {
             res.send({ error: true, data: "Email already taken" });
-          } else {
-            res.send({ error: true, data: "Mobile already taken" });
           }
+          // } else {
+          //   res.send({ error: true, data: "Mobile already taken" });
+          // }
         }
       }
     } else {
