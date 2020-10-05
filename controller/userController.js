@@ -391,6 +391,29 @@ module.exports = {
       res.send({ error: true, data: detail });
     }
   },
+
+  forget_password: async (req, res) => {
+    const { error } = updatePasswordValidation(req.body);
+    if (!error) {
+      let user_id = req.body.user_id;
+      let old_password = req.body.cnf_password;
+      let new_password = req.body.password;
+      const user = await userSchemaModel.findOne({ _id: user_id });
+      if (!user) {
+        res.status(500).json({ error: true, data: "password not match !" });
+      } else {
+        const hashedPassword = await passwordHash.generate(new_password);
+        user.password = hashedPassword;
+        user.confirmpassword = old_password;
+        user.save();
+        res.status(200).json({ error: false, data: "done" });
+      }
+    } else {
+      let detail = error.details[0].message;
+      res.send({ error: true, data: detail });
+    }
+  },
+
   updateAndAddUserToken: async function (req, res) {
     if (req.body.id && req.body.token) {
       await userSchemaModel.findByIdAndUpdate(req.body.id, {

@@ -46,5 +46,5 @@ userRouter.post("/update_user_token", userController.updateAndAddUserToken);
 userRouter.post("/block_user", userController.blockUser);
 userRouter.post("/getuserId",userController.getUserId);
 userRouter.post("/getuserMobile",userController.getUserMobile);
-
+userRouter.post("/forgetpassword",userController.forget_password);
 module.exports = userRouter;
