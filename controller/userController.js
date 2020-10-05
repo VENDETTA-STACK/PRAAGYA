@@ -13,6 +13,7 @@ const { stateSchemaModel } = require("../models/stateModel");
 const { affiliationSchemaModel } = require("../models/affiliationModel");
 const { degrees, PDFDocument, rgb, StandardFonts } = require("pdf-lib");
 const { worker } = require("cluster");
+const { use } = require("../app");
 
 module.exports = {
   createUser: async (req, res) => {
@@ -41,6 +42,7 @@ module.exports = {
             name: req.body.name,
             email: req.body.email,
             password: hashedPassword,
+            confirmpassword:req.body.confirmpassword,
             gender: req.body.gender,
             dob: req.body.dob,
             country: req.body.country,
@@ -216,6 +218,7 @@ module.exports = {
       const user = await userSchemaModel.find({
         name: { $regex: email },
       });
+      console.log(user);
       if (!user) {
         res.status(500).json({ error: true, data: "no user found !" });
       } else {
@@ -225,8 +228,10 @@ module.exports = {
       res.send({ error: true, data: "user Email required" });
     }
   },
+
   getUsers: async (req, res) => {
-    const user = await userSchemaModel.find({Status:true}).sort({ created: -1 });
+    //const user = await userSchemaModel.find({Status:true}).sort({ created: -1 });
+    const user = await userSchemaModel.find().sort({ created: -1 });
     if (!user) {
       res.status(500).json({ error: true, data: "no user found !" });
     } else {
@@ -408,6 +413,39 @@ module.exports = {
     await userSchemaModel.findByIdAndUpdate(user_id,{Status:false});
     res.status(500).json({ error: true, data: "User is blocked." });
   },
+
+  unblockUser:async function(req, res){
+    var user_id = req.body.user_id;
+    await userSchemaModel.findByIdAndUpdate(user_id,{Status:true});
+    res.status(500).json({error: true, data:"User is unblocked."})
+  },
+
+  getUserId: async (req, res) => {
+    if (req.body.email) {
+      let email = req.body.email;
+      const user = await userSchemaModel.find({
+        email: { $regex: email },
+      });
+      console.log(user);
+      if (!user) {
+        res.status(500).json({ error: true, data: "no user found !" });
+      } else {
+        res.status(200).json({ error: false, data: user });
+      }
+    } else {
+      res.send({ error: true, data: "user Email required" });
+    }
+  },
+
+  getUserMobile: async function(req, res){
+    const user = await userSchemaModel.find({Status:true}).sort({ created: -1 });
+    if (!user) {
+      res.status(500).json({ error: true, data: "no user found !" });
+    } else {
+      res.status(200).json({ error: false, data: user });
+    }
+  }
+
 };
 
 function createUserValidation(user) {

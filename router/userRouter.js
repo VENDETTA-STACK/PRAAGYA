@@ -43,6 +43,8 @@ userRouter.post(
 userRouter.post("/update_bio", userController.update_bio);
 userRouter.post("/update_user_token", userController.updateAndAddUserToken);
 // userRouter.get("/testing", userController.testing);
- userRouter.post("/block_user", userController.blockUser);
+userRouter.post("/block_user", userController.blockUser);
+userRouter.post("/getuserId",userController.getUserId);
+userRouter.post("/getuserMobile",userController.getUserMobile);
 
 module.exports = userRouter;

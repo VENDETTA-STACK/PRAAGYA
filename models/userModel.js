@@ -55,6 +55,7 @@ var userSchema = mongoose.Schema({
     required: true,
     min: 6,
   },
+  confirmpassword:String,
   img: {
     type: String,
     default: "default-user-profile-image.png",
