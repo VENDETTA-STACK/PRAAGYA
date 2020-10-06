@@ -396,15 +396,15 @@ module.exports = {
     const { error } = updatePasswordValidation(req.body);
     if (!error) {
       let user_id = req.body.user_id;
-      let old_password = req.body.cnf_password;
-      let new_password = req.body.password;
+      let cnf_password = req.body.old_password;
+      let password = req.body.new_password;
       const user = await userSchemaModel.findOne({ _id: user_id });
       if (!user) {
         res.status(500).json({ error: true, data: "password not match !" });
       } else {
-        const hashedPassword = await passwordHash.generate(new_password);
+        const hashedPassword = await passwordHash.generate(password);
         user.password = hashedPassword;
-        user.confirmpassword = old_password;
+        user.confirmpassword = cnf_password;
         user.save();
         res.status(200).json({ error: false, data: "done" });
       }
