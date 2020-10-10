@@ -11,6 +11,7 @@ const { likeSchemaModel } = require("../models/likesModel");
 const { commentSchemaModel } = require("../models/commentsModel");
 const { stateSchemaModel } = require("../models/stateModel");
 const { affiliationSchemaModel } = require("../models/affiliationModel");
+const { blockuserModel } = require("../models/blockUser");
 const { degrees, PDFDocument, rgb, StandardFonts } = require("pdf-lib");
 const { worker } = require("cluster");
 const { use } = require("../app");
@@ -460,15 +461,91 @@ module.exports = {
     }
   },
 
-  getUserMobile: async function(req, res){
-    const user = await userSchemaModel.find({Status:true}).sort({ created: -1 });
+  getdetails: async function(req, res){
+    res.status(200).json({ error: false, data: 0 });
+  },
+  //WORKING API FOR GET USER BLOCKED USER NOT HANDLE
+  // getUserMobile: async function(req, res){
+  //   //const user = await userSchemaModel.find({Status:true}).sort({ created: -1 });
+  //   const user = await userSchemaModel.find({_id:{$nin:req.body.id},Status:true}).sort({ created:-1 });
+  //   if (!user) {
+  //     res.status(500).json({ error: true, data: "no user found !" });
+  //   } else {
+  //     res.status(200).json({ error: false, data: user });
+  //   }
+  // },
+
+  getUserMobiletest: async function(req,res){
+    const user = await userSchemaModel.find({_id:{$nin:req.body.id}}).sort({ created:-1 });
+    console.log(user.length);
+    if(!user){
+      res.status(500).json({ error: true, data: "no user found !" });
+    } else{
+      res.status(200).json({ error: false, data: user });
+    }
+  },
+
+  userBlockbyUser : async function(req,res){
+    return new Promise((resolve, reject) => {
+      const record = blockuserModel({
+        UserId:req.body.userid,
+        VictimId : req.body.victimid,
+        Date : Date.now(),
+        Status:true,
+      });
+      record.save(async (err,data)=>{
+        if(err){
+          res.status(500).json({error:true, data:"You can not block user."});
+        } else{
+          if(data.length == 0){
+            res.status(500).json({error:true, data:"You can not block user."});
+          } else{
+            res.status(200).json({error:false, data:data});
+          }
+        }
+      });
+    });
+  },
+
+  // getMobileUser : async function(req, res){
+    
+  // }
+
+  //For Get User Display Handle Blocked User
+  getUserMobile: async function(req,res){
+    var record = [];
+    const user = await userSchemaModel.find({_id:{$nin:req.body.userid},Status:true}).sort({ created:-1 }).select("_id");
+    for(var userIndex = 0;userIndex<user.length;userIndex++){
+      var checkpoint = await blockuserModel.find({UserId:req.body.userid,VictimId:user[userIndex]._id});
+      if(checkpoint.length == 0){
+        var userdata = await userSchemaModel.find({_id:user[userIndex]._id})
+        record.push(userdata);
+      }
+    }
+    if(record.length == 0){
+      res.status(500).json({ error: true, data: "no user found !" });
+    } else {
+      res.status(200).json({ error: true, data: record });
+    }
+  },
+
+  userUnblockbyUser : async function(req,res){
+    const user = await blockuserModel.find({UserId:req.body.userid,VictimId:req.body.victimid}).remove();
+    if(!user){
+      res.status(500).json({ error: true, data: "no user found !" });
+    } else{
+      res.status(200).json({ error: true, data: "Done." });
+    }
+  },
+  
+  getuserbyfilter : async function(req,res){
+    const user = await userSchemaModel.find({state:req.body.stateid,affilatedWith:req.body.affiatedid});
     if (!user) {
       res.status(500).json({ error: true, data: "no user found !" });
     } else {
       res.status(200).json({ error: false, data: user });
     }
   }
-
 };
 
 function createUserValidation(user) {

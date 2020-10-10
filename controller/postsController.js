@@ -37,8 +37,8 @@ module.exports = {
       res.send({ error: true, data: detail });
     }
   },
-
-  getPosts: async (req, res) => {
+  //getpost testing
+  getPostsTest: async (req, res) => {
     const { error } = getPostsValidation(req.body);
 
     if (!error) {
@@ -93,6 +93,67 @@ module.exports = {
       res.send({ error: true, data: detail });
     }
   },
+
+  getPosts: async (req, res) => {
+    const { error } = getPostsValidation(req.body);
+
+    if (!error) {
+      let results = {};
+      
+      const { user_id, page } = req.body;
+
+      const page_as_int = parseInt(page);
+      const limit = parseInt("10");
+      const startIndex = (page_as_int - 1) * limit;
+      const endIndex = page_as_int * limit;
+
+      const posts = await postSchemaModel
+        .find()
+        .limit(limit)
+        .skip(startIndex)
+        .sort({ createdAt: -1 })
+        .populate(user_id)
+        .populate("user_id", "img name _id")
+        .populate({
+          
+        });
+
+      if (posts.length === 0) {
+        results.error = true;
+        results.data = "No posts ";
+        res.send(results);
+      } else {
+        let totalCommentCount = await postSchemaModel.countDocuments().exec();
+        if (endIndex < totalCommentCount) {
+          results.next = {
+            page: page_as_int + 1,
+            limit: limit,
+          };
+        }
+
+        if (startIndex > 0) {
+          results.previous = {
+            page: page_as_int - 1,
+            limit: limit,
+          };
+        }
+
+        posts.forEach((post) => {
+          post.isUserLiked = post.usersLiked.includes(user_id);
+        });
+        res.send({
+          error: false,
+          totalCommentCount: totalCommentCount,
+          data: posts,
+        });
+      }
+    } else {
+      let detail = error.details[0].message;
+      res.send({ error: true, data: detail });
+    }
+  },
+
+
   fetch_posts_by_user_id: async (req, res) => {
     let results = {};
     const { peer_id, user_id } = req.body;
