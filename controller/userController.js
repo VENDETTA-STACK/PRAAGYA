@@ -438,6 +438,16 @@ module.exports = {
     res.status(500).json({ error: true, data: "User is blocked." });
   },
 
+  getBlockUser: async function(req , res){
+    const block_user_data = await blockuserModel.find();
+    console.log(block_user_data);
+    if(block_user_data){
+      res.status(200).json({ error: false , data : block_user_data });
+    }else{
+      res.status(500).json({ error: true, data: "No Data Found...!!!" });
+    }
+  },
+
   unblockUser:async function(req, res){
     var user_id = req.body.user_id;
     await userSchemaModel.findByIdAndUpdate(user_id,{Status:true});

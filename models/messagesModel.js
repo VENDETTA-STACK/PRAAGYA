@@ -27,9 +27,9 @@ const messageSchema = mongoose.Schema({
         default: 0
     },
     sender_id:
-        {type: mongoose.Schema.Types.ObjectId},
+        {type: mongoose.Schema.Types.ObjectId , ref: 'users' },
     receiver_id:
-        {type: mongoose.Schema.Types.ObjectId},
+        {type: mongoose.Schema.Types.ObjectId , ref: 'users'  },
     chat_id: {
         type: mongoose.Schema.Types.ObjectId
     },

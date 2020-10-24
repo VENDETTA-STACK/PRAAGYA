@@ -16,6 +16,7 @@ const notificationsRouter = require("./router/notificationsRouter");
 const publicRoomRouter = require("./router/publicRoomsRouter");
 const publicRoomMessagesRouter = require("./router/publicRoomMessagesRouter");
 const locationRouter = require("./router/locationRouter");
+const counterRouter = require("./router/counterRouter");
 const app = express();
 // adding Helmet to enhance your API's security
 app.use(helmet());
@@ -69,5 +70,6 @@ app.use("/api/notifications", notificationsRouter);
 app.use("/api/rooms", publicRoomRouter);
 app.use("/api/roomsMessages", publicRoomMessagesRouter);
 app.use("/api/location", locationRouter);
+app.use("/api/counter",counterRouter);
 
 module.exports = app;

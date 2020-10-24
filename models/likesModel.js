@@ -16,7 +16,6 @@ var likeSchema = mongoose.Schema({
         trim: true,
         ref: 'posts'
     },
-
     created: {
         type: Number,
         default: Math.floor(Date.now() / 1000)

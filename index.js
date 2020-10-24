@@ -4,7 +4,7 @@ const app = require("./app");
 //const port = process.egitnv.PORT || 3000;
 //after kd - 17/08/2020
 //const port = 8080;
-const port = 3000;
+const port = 80;
 
 const socketIO = require("socket.io");
 const server = require("http").createServer(app);

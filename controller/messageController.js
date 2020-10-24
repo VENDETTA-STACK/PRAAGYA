@@ -68,4 +68,26 @@ module.exports = {
       res.send({ error: true, data: `${err}` });
     }
   },
+
+  getAllMessageData: async (req , res) => {
+    try {
+      let data = await messageSchemaModel.find()
+                                          .populate({
+                                            path : "sender_id",
+                                            select : "name"
+                                          })
+                                          .populate({
+                                            path : "receiver_id",
+                                            select : "name"
+                                          });
+      console.log(data);
+      if(data){
+        res.status(200).json({ error: false , data : data });
+      }else{
+        res.status(400).json({ error: true , data : "Data Not Found...!!!" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: true , data : "Something Went Wrong...!!!" });
+    }
+  }
 };

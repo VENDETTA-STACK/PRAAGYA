@@ -1,9 +1,11 @@
 "use strict";
 //created by Hatem Ragap
 const Joi = require("joi");
+const userSchemaModel = require("../models/userModel");
 const { postSchemaModel } = require("../models/postsModel");
 const { commentSchemaModel } = require("../models/commentsModel");
 const { likeSchemaModel } = require("../models/likesModel");
+const { select } = require("underscore");
 
 module.exports = {
   createPost: async (req, res) => {
@@ -82,6 +84,7 @@ module.exports = {
 
         posts.forEach((post) => {
           post.isUserLiked = post.usersLiked.includes(user_id);
+          // post.isUserLiked = post.usersLiked.includes(userSchemaModel.findById(user_id).select(name));
         });
         res.send({
           error: false,
@@ -138,6 +141,7 @@ module.exports = {
 
         posts.forEach((post) => {
           post.isUserLiked = post.usersLiked.includes(user_id);
+          // post.isUserLiked = post.usersLiked.includes(userSchemaModel.findById(user_id).select(name));
         });
         res.send({
           error: false,
@@ -197,6 +201,28 @@ module.exports = {
       res.send({ error: false, data: posts });
     }
   },
+
+  getAllPost: async (req , res) => {
+    let results = { };
+
+    const allposts = await postSchemaModel.find()
+                                          .populate({
+                                              path : "user_id",
+                                              select : "name"
+                                            });
+    console.log(allposts);
+
+    if (allposts.length > 0) {
+      results.error = false;
+      results.message = "Post Founds ! ";
+      results.count = allposts.length;
+      results.data = allposts;
+      res.send(results);
+    } else {
+      res.send({ error: false, data: posts });
+    }
+
+  }
 };
 
 function createPostValidation(post) {
@@ -209,7 +235,7 @@ function createPostValidation(post) {
 
 function getPostsValidation(post) {
   const schema = Joi.object().keys({
-    user_id: Joi.required(),
+    user_id: Joi.required(), 
     page: Joi.required(),
   });
   return Joi.validate(post, schema);
