@@ -115,6 +115,22 @@ module.exports = {
       res.send({error:true, data : detail});
     }
 },
+  fetchLikeData: async function(req,res){
+    let record = await likeSchemaModel.find()
+                                      .populate({
+                                          path: "user_id",
+                                          select: "name"
+                                      })
+                                      .populate({
+                                          path: "post_id",
+                                      });
+    if(record){
+      res.status(200).json({ isSuccess : true , Data : record , Message : "Data Found" });
+    }else{
+      res.status(400).json({ isSuccess : true , Data : 0 , Message : "Data Not Found" });
+    }
+  }
+
 };
 
 function createLikeValidation(like) {
