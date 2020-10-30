@@ -5,7 +5,7 @@ const app = require("./app");
 //const port = process.egitnv.PORT || 3000;
 //after kd - 17/08/2020
 //const port = 8080;
-const port = 3000;
+const port = 80;
 
 // set up a route to redirect http to https
 app.use(function(req, res, next) {
