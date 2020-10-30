@@ -22,10 +22,12 @@ var postSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
-    commentsOnPost : {
-        type: String,
-        ref: 'comments'
-    },
+    commentsOnPost: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "comments"
+        }
+      ],
     commentsCount: {
         type: Number,
         default: 0

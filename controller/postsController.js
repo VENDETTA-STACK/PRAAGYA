@@ -6,6 +6,7 @@ const { postSchemaModel } = require("../models/postsModel");
 const { commentSchemaModel } = require("../models/commentsModel");
 const { likeSchemaModel } = require("../models/likesModel");
 const { select } = require("underscore");
+const commentsModel = require("../models/commentsModel");
 
 module.exports = {
   createPost: async (req, res) => {
@@ -118,13 +119,21 @@ module.exports = {
         .sort({ createdAt: -1 })
         .populate(user_id)
         .populate("user_id", "img name _id")
-        .populate("commentsOnPost" , "comment");
+        .populate("commentsOnPost", "name comment user_img");
 
-      const commentsData = await commentSchemaModel.find();
-      //console.log(commentsData);
-      let record = [posts , commentsData];
-     // console.log(record);
-
+      // const posts = await postSchemaModel.find()
+      //                                    .populate(user_id)
+      //                                    .populate({
+      //                                      path : "commentsOnPost",
+      //                                      select : "name comment user_img"
+      //                                    });
+      // const posts = await postSchemaModel.find().populate("comment");
+      // const record = await commentSchemaModel.find().populate(user_id);
+      // console.log(record);
+      // const commentsData = await commentSchemaModel.find();
+      
+      // let record = [posts , commentsData];
+     
       if (posts.length === 0) {
         results.error = true;
         results.data = "No posts ";
@@ -152,7 +161,7 @@ module.exports = {
         res.send({
           error: false,
           totalCommentCount: totalCommentCount,
-          data: record,
+          data: posts,
         });
       }
     } else {
