@@ -117,7 +117,13 @@ module.exports = {
         .skip(startIndex)
         .sort({ createdAt: -1 })
         .populate(user_id)
-        .populate("user_id", "img name _id");
+        .populate("user_id", "img name _id")
+        .populate("commentsOnPost" , "comment");
+
+      const commentsData = await commentSchemaModel.find();
+      //console.log(commentsData);
+      let record = [posts , commentsData];
+     // console.log(record);
 
       if (posts.length === 0) {
         results.error = true;
@@ -146,7 +152,7 @@ module.exports = {
         res.send({
           error: false,
           totalCommentCount: totalCommentCount,
-          data: posts,
+          data: record,
         });
       }
     } else {
@@ -210,6 +216,8 @@ module.exports = {
                                               path : "user_id",
                                               select : "name"
                                             });
+
+    const allComments = await 
     console.log(allposts);
 
     if (allposts.length > 0) {

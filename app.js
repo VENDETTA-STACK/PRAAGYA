@@ -23,6 +23,29 @@ app.use(helmet());
 
 // enabling CORS for all requests
 app.use(cors());
+console.log("caasd");
+
+// set up a route to redirect http to https
+app.get('*', function(req, res) {  
+    res.redirect('http://' + req.headers.host + req.url);
+
+    // Or, if you don't want to automatically detect the domain name from the request header, you can hard code it:
+    // res.redirect('https://example.com' + req.url);
+})
+
+// app.use(function(req, res, next) {
+//       if ((req.get('X-Forwarded-Proto') !== 'https')) {
+//         res.redirect('https://' + req.get('Host') + req.url);
+//       } else
+//         next();
+//     });
+
+// app.use(function(req, res, next) {
+//   if (req.secure){
+//     return next();
+//   }
+//   res.redirect("https://" + req.headers.host + req.url);
+// });
 
 // adding morgan to log HTTP requests
 app.use(morgan("combined"));

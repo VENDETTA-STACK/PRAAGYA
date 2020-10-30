@@ -1,10 +1,21 @@
 //created by Hatem Ragap
 const app = require("./app");
+// var http = express();
 //before
 //const port = process.egitnv.PORT || 3000;
 //after kd - 17/08/2020
 //const port = 8080;
 const port = 80;
+
+// set up a route to redirect http to https
+app.use(function(req, res, next) {
+  console.log("ca");
+  if ((req.get('X-Forwarded-Proto') !== 'https')) {
+    
+    res.redirect('https://' + req.get('Host') + req.url);
+  } else
+    next();
+});
 
 const socketIO = require("socket.io");
 const server = require("http").createServer(app);
