@@ -53,6 +53,7 @@ module.exports = {
             affiliationCode: membershipNumber.affiliationcode,
             membershipNumber: membershipNumber.membershipcode,
             schoolName: req.body.schoolname,
+            schoolAddress: req.body.schoolAddress,
             schoolLocation: req.body.schoollocation,
             affilatedWith: req.body.affilatedwith,
             afillatedNumber: req.body.affilatednumber,
