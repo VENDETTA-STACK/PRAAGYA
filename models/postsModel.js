@@ -24,8 +24,9 @@ var postSchema = mongoose.Schema({
     },
     commentsOnPost: [
         {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'comments'
+          type: String,
+          ref: 'comments',
+          field: 'user_id'
         }
       ],
     commentsCount: {

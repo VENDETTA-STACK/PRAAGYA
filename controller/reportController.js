@@ -8,7 +8,6 @@ const { post } = require("../app");
 module.exports = {
      
     createReport: async function(req,res,next){
-        console.log("Hellooooooooooooooooooooow........................!!!!");
         try {
             var { reportedUser , post_id , reportedBy , date , reason } = req.body;
             var record = await new reportSchemaModel({
@@ -22,14 +21,28 @@ module.exports = {
             var saveReportPost = record.save();
 
             if(saveReportPost){
-                res.status(200).json({ isSuccess : true , Data : saveReportPost , Message : "Data Found" });
+                res.status(200).json({ isSuccess : true , Data : saveReportPost , Message : "Post Reported" });
             }else{
-                res.status(400).json({ isSuccess : true , Data : 0 , Message : "Data Not Found" });
+                res.status(400).json({ isSuccess : true , Data : 0 , Message : "Post Report Failed" });
             }    
         } catch (error) {
             res.status(500).status({ isSuccess : false , Message : error.message });
         }
   },
+
+  getAllReport: async function(req,res,next){
+    try {
+        var record = await reportSchemaModel.find();
+
+        if(record){
+            res.status(200).json({ isSuccess : true , Data : record , Message : "Data Found" });
+        }else{
+            res.status(400).json({ isSuccess : true , Data : 0 , Message : "Data Not Found" });
+        }    
+    } catch (error) {
+        res.status(500).status({ isSuccess : false , Message : error.message });
+    }
+},
 
 };
 

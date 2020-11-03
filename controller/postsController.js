@@ -112,21 +112,21 @@ module.exports = {
       const startIndex = (page_as_int - 1) * limit;
       const endIndex = page_as_int * limit;
 
-      const posts = await postSchemaModel
-        .find()
-        .limit(limit)
-        .skip(startIndex)
-        .sort({ createdAt: -1 })
-        .populate(user_id)
-        .populate("user_id", "img name _id")
-        .populate("commentsOnPost" , "name comment user_img");
+      // const posts = await postSchemaModel
+      //   .find()
+      //   .limit(limit)
+      //   .skip(startIndex)
+      //   .sort({ createdAt: -1 })
+      //   .populate(user_id)
+      //   .populate("user_id", "img name _id")
+      //   .populate("commentsOnPost" , "name comment user_img");
 
-      // const posts = await postSchemaModel.find()
-      //                                    .populate(user_id)
-      //                                    .populate({
-      //                                      path : "commentsOnPost",
-      //                                      select : "name comment user_img"
-      //                                    });
+      const posts = await postSchemaModel.find()
+                                         .populate(user_id)
+                                         .populate({
+                                           path : "commentsOnPost",
+                                           select : "name comment user_img"
+                                         });
       // const posts = await postSchemaModel.find().populate("comment");
       // const record = await commentSchemaModel.find().populate(user_id);
       // console.log(record);
@@ -225,8 +225,9 @@ module.exports = {
                                               path : "user_id",
                                               select : "name"
                                             });
+                                          // .populate("commentsOnPost");
 
-    const allComments = await 
+    // const allComments = await 
     console.log(allposts);
 
     if (allposts.length > 0) {
@@ -239,7 +240,8 @@ module.exports = {
       res.send({ error: false, data: posts });
     }
 
-  }
+  },
+  // get_all_post_data :
 };
 
 function createPostValidation(post) {
