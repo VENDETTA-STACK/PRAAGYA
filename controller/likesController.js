@@ -105,8 +105,10 @@ module.exports = {
 
       await likeSchemaModel.find({user_id:user_id, post_id:post}).remove();
       let postData = await postSchemaModel.findById(post_id);
-      postData.likes = --postData.likes;
-      postData.usersLiked.remove(user_id);
+      console.log("sdcda                zc z");
+      console.log(postData);
+      // postData.likes = --postData.likes;
+      // postData.usersLiked.remove(user_id);
       await postData.save();
 
       res.status(200).json({error : false, data : "Done"});

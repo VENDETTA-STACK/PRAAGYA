@@ -439,7 +439,15 @@ module.exports = {
   },
 
   getBlockUser: async function(req , res){
-    const block_user_data = await blockuserModel.find();
+    const block_user_data = await blockuserModel.find()
+                                                .populate({
+                                                  path : 'UserId',
+                                                  select : 'name'
+                                                })
+                                                .populate({
+                                                  path : 'VictimId',
+                                                  select : 'name'
+                                                });
     console.log(block_user_data);
     if(block_user_data){
       res.status(200).json({ error: false , data : block_user_data });
