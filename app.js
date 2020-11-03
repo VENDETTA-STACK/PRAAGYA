@@ -16,36 +16,13 @@ const notificationsRouter = require("./router/notificationsRouter");
 const publicRoomRouter = require("./router/publicRoomsRouter");
 const publicRoomMessagesRouter = require("./router/publicRoomMessagesRouter");
 const locationRouter = require("./router/locationRouter");
-const counterRouter = require("./router/counterRouter");
+const reportRouter = require("./router/reportRouter");
 const app = express();
 // adding Helmet to enhance your API's security
 app.use(helmet());
 
 // enabling CORS for all requests
 app.use(cors());
-console.log("caasd");
-
-// set up a route to redirect http to https
-app.get('*', function(req, res) {  
-    res.redirect('http://' + req.headers.host + req.url);
-
-    // Or, if you don't want to automatically detect the domain name from the request header, you can hard code it:
-    // res.redirect('https://example.com' + req.url);
-})
-
-// app.use(function(req, res, next) {
-//       if ((req.get('X-Forwarded-Proto') !== 'https')) {
-//         res.redirect('https://' + req.get('Host') + req.url);
-//       } else
-//         next();
-//     });
-
-// app.use(function(req, res, next) {
-//   if (req.secure){
-//     return next();
-//   }
-//   res.redirect("https://" + req.headers.host + req.url);
-// });
 
 // adding morgan to log HTTP requests
 app.use(morgan("combined"));
@@ -93,6 +70,6 @@ app.use("/api/notifications", notificationsRouter);
 app.use("/api/rooms", publicRoomRouter);
 app.use("/api/roomsMessages", publicRoomMessagesRouter);
 app.use("/api/location", locationRouter);
-app.use("/api/counter",counterRouter);
+app.use("/api/reportPost", reportRouter);
 
 module.exports = app;
