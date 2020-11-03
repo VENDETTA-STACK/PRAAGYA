@@ -7,5 +7,6 @@ const commentController = require('../controller/commentController');
 commentRouter.post("/create", commentController.createComment);
 commentRouter.post("/delete", commentController.deleteComment);
 commentRouter.post("/fetch_all", commentController.getComments);
+commentRouter.post("/fetch_all_comments", commentController.getAllCommentsData);
 
 module.exports = commentRouter;

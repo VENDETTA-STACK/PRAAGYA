@@ -102,6 +102,7 @@ module.exports = {
     const { post_id } = req.body;
     const comments = await commentSchemaModel
       .find({ post_id: post_id })
+      .populate(post_id)
       .sort({ created: 1 });
     if (comments.length === 0) {
       res.send({ error: true, data: "No Comments" });
@@ -109,4 +110,17 @@ module.exports = {
       res.send({ error: false, data: comments });
     }
   },
+  getAllCommentsData: async (req,res,next) => {
+    try {
+      var record = await commentSchemaModel.find().populate('post_id');
+      if(record){
+        res.status(200).json({ isSuccess : true , Data : record , Message : "Comments Data Found" });
+      }else{
+        res.status(400).json({ isSuccess : false , Data : 0 , Message : "Comments Not Found" });
+      }  
+    } catch (error) {
+      res.status(500).json({ isSuccess : true , Message : error.message });
+    }
+    
+  }
 };

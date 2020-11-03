@@ -20,5 +20,6 @@ postRouter.post("/getPostById", postsController.getPostById);
 postRouter.post("/deletePost", postsController.deletePost);
 postRouter.post("/fetch_posts_by_user_id", postsController.fetch_posts_by_user_id);
 postRouter.post("/get_all_users_post",postsController.getAllPost);
+postRouter.post("/get_all_post_comments",postsController.get_all_post_data);
 
 module.exports = postRouter;

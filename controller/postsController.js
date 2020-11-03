@@ -118,15 +118,8 @@ module.exports = {
         .skip(startIndex)
         .sort({ createdAt: -1 })
         .populate(user_id)
-        .populate("user_id", "img name _id")
-        .populate("commentsOnPost" , "name comment user_img");
+        .populate("user_id", "img name _id");
 
-      // const posts = await postSchemaModel.find()
-      //                                    .populate(user_id)
-      //                                    .populate({
-      //                                      path : "commentsOnPost",
-      //                                      select : "name comment user_img"
-      //                                    });
       // const posts = await postSchemaModel.find().populate("comment");
       // const record = await commentSchemaModel.find().populate(user_id);
       // console.log(record);
@@ -241,7 +234,28 @@ module.exports = {
     }
 
   },
-  // get_all_post_data :
+  get_all_post_data : async ( req , res ) => {
+    try {
+      var record = await postSchemaModel.aggregate([
+        {
+          $lookup:
+            {
+              from: "comments",
+              localField: "user_id",
+              foreignField: "user_id",
+              as: "Comments"
+            }
+       }
+     ]);
+      if(record){
+        res.status(200).json({ isSuccess : true , Data : record , Message : "Data Found" });
+      }else{
+        res.status(400).json({ isSuccess : true , Data : 0 , Message : "Empty Data" });
+      }
+    } catch (error) {
+      res.status(500).json({ isSuccess : false , Message : error.message });
+    }
+  }
 };
 
 function createPostValidation(post) {

@@ -22,13 +22,6 @@ var postSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
-    commentsOnPost: [
-        {
-          type: String,
-          ref: 'comments',
-          field: 'user_id'
-        }
-      ],
     commentsCount: {
         type: Number,
         default: 0
