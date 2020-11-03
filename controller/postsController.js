@@ -247,8 +247,10 @@ module.exports = {
             }
        }
      ]);
+      var record_data = await postSchemaModel.populate(record , { path: 'user_id' , select : 'name img' });
+      // console.log(dataxxx);
       if(record){
-        res.status(200).json({ isSuccess : true , Data : record , Message : "Data Found" });
+        res.status(200).json({ isSuccess : true , Data : record_data , Message : "Data Found" });
       }else{
         res.status(400).json({ isSuccess : true , Data : 0 , Message : "Empty Data" });
       }

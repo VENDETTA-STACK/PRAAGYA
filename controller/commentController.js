@@ -112,7 +112,15 @@ module.exports = {
   },
   getAllCommentsData: async (req,res,next) => {
     try {
-      var record = await commentSchemaModel.find().populate('post_id');
+      var record = await commentSchemaModel.find()
+                                           .populate({
+                                             path: 'post_id',
+                                             select: 'post_img',
+                                             populate :({
+                                               path: 'user_id',
+                                               select: 'name img'
+                                             })
+                                           });
       if(record){
         res.status(200).json({ isSuccess : true , Data : record , Message : "Comments Data Found" });
       }else{
