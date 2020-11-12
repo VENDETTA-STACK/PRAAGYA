@@ -56,4 +56,5 @@ userRouter.post("/getuserbyfilter",userController.getuserbyfilter);
 userRouter.post("/userUnblockbyUser",userController.userUnblockbyUser);
 userRouter.post("/blockedByUser",userController.userBlock);
 userRouter.post("/getMyBlockUserList",userController.getUserBlockList);
+userRouter.post("/deleteBlock",userController.deleteBlock);
 module.exports = userRouter;

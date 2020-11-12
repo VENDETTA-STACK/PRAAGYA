@@ -448,6 +448,10 @@ module.exports = {
         VictimId: victimId,
         Status: status,
       });
+      // console.log(record.Status);
+      // if(record.Status == false){
+
+      // }
       if(record){
         await record.save();
         res.status(200).json({ IsSuccess: true , Data: 1 , Message: "User Blocked...!!!" });
@@ -464,7 +468,7 @@ module.exports = {
 
     try {
 
-      var record = await blockuserModel.find({ UserId: UserId })
+      var record = await blockuserModel.find({ UserId: UserId , Status: true })
                                      .populate({
                                        path : 'UserId',
                                        select : 'name'
@@ -472,7 +476,7 @@ module.exports = {
                                      .populate({
                                        path : 'VictimId',
                                      });
-
+        // console.log(record[0])
       if(record){
         res.status(200).json({ error: false , data : record });
       }else{
@@ -481,6 +485,11 @@ module.exports = {
     } catch (error) {
       res.status(500).json({ IsSuccess: false , Message: error.message });
     }
+  },
+
+  deleteBlock: async function(req,res,next){
+    var record = await blockuserModel.deleteMany();
+    res.json("Done");
   },
 
   getBlockUser: async function(req , res){
