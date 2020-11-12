@@ -11,7 +11,10 @@ var blockUserSchema = mongoose.Schema({
         ref: "users",
         required: true,
       },
-    Date:Date,
+    Date: {
+        type: Date,
+        default: Date.now(),
+    },
     Status:Boolean,
 });
 var blockuserModel =  mongoose.model("BlockUser",blockUserSchema);
