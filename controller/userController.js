@@ -439,6 +439,50 @@ module.exports = {
     res.status(500).json({ error: true, data: "User is blocked." });
   },
 
+  userBlock: async function(req,res,next){
+    const { userId , victimId , status } = req.body;
+
+    try {
+      var record = await new blockuserModel({
+        UserId: userId,
+        VictimId: victimId,
+        Status: status,
+      });
+      if(record){
+        await record.save();
+        res.status(200).json({ IsSuccess: true , Data: 1 , Message: "User Blocked...!!!" });
+      }else{
+        res.status(400).json({ IsSuccess: true , Data: 0 , Message: "User Not Blocked...!!!" });
+      } 
+    } catch (error) {
+      res.status(500).json({ IsSuccess: false , Message: error.message });
+    }    
+  },
+
+  getUserBlockList: async function(req,res,nexr){
+    const { UserId } = req.body;
+
+    try {
+
+      var record = await blockuserModel.find({ UserId: UserId })
+                                     .populate({
+                                       path : 'UserId',
+                                       select : 'name'
+                                     })
+                                     .populate({
+                                       path : 'VictimId',
+                                     });
+
+      if(record){
+        res.status(200).json({ error: false , data : record });
+      }else{
+        res.status(400).json({ error: true, data: "No Data Found...!!!" });
+      }
+    } catch (error) {
+      res.status(500).json({ IsSuccess: false , Message: error.message });
+    }
+  },
+
   getBlockUser: async function(req , res){
     const block_user_data = await blockuserModel.find()
                                                 .populate({
@@ -447,7 +491,6 @@ module.exports = {
                                                 })
                                                 .populate({
                                                   path : 'VictimId',
-                                                  select : 'name'
                                                 });
     console.log(block_user_data);
     if(block_user_data){
@@ -526,9 +569,15 @@ module.exports = {
     });
   },
 
-  // getMobileUser : async function(req, res){
+  // Get Particular Users Block List
+
+  // getUserBlockList: async function(req,res){
+
+  //   const {  }
+
+  // },
     
-  // }
+  
 
   //For Get User Display Handle Blocked User
   getUserMobile: async function(req,res){

@@ -35,43 +35,48 @@ module.exports = {
 
         if (user_id !== peer_id) {
           let userToNotify = await userSchemaModel.findById(peer_id);
-          let peerToken = userToNotify.token;
+          console.log(userToNotify);
+          console.log(userToNotify.token);
+          if(userToNotify.token != " "){
+            let peerToken = userToNotify.token;
 
-          var payload = {
-            notification: {
-              body: `${name} has Like your post`,
-              title: "V Chat App",
-            },
-            data: {
-              id: `${post_id}`,
-              post_owner_id: `${peer_id}`,
-              screen: "like",
-              click_action: "FLUTTER_NOTIFICATION_CLICK",
-            },
-          };
-          var options = {
-            priority: "high",
-            timeToLive: 60 * 60 * 24,
-          };
-          admin
-            .messaging()
-            .sendToDevice(peerToken, payload, options)
-            .then(function (ress) {})
-            .catch(function (err) {
-              console.log("error is " + err);
+            var payload = {
+              notification: {
+                body: `${name} has Like your post`,
+                title: "V Chat App",
+              },
+              data: {
+                id: `${post_id}`,
+                post_owner_id: `${peer_id}`,
+                screen: "like",
+                click_action: "FLUTTER_NOTIFICATION_CLICK",
+              },
+            };
+            var options = {
+              priority: "high",
+              timeToLive: 60 * 60 * 24,
+            };
+            admin
+              .messaging()
+              .sendToDevice(peerToken, payload, options)
+              .then(function (ress) {})
+              .catch(function (err) {
+                console.log("error is " + err);
+              });
+            //save notif
+            let notifModel = new notificationsSchemaModel({
+              name: name,
+              title: "Liked your post",
+              userImg: user_img,
+              postId: post_id,
+              notif_to_user: peer_id,
+              my_id: user_id,
             });
-          //save notif
-          let notifModel = new notificationsSchemaModel({
-            name: name,
-            title: "Liked your post",
-            userImg: user_img,
-            postId: post_id,
-            notif_to_user: peer_id,
-            my_id: user_id,
-          });
-          await notifModel.save();
+            await notifModel.save();
         }
 
+      }
+          
         res.status(200).json({ error: false, data: "done" });
       }
     });
