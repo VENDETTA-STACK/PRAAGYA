@@ -443,27 +443,57 @@ module.exports = {
     const { userId , victimId , status } = req.body;
 
     try {
-      var record = await new blockuserModel({
-        UserId: userId,
-        VictimId: victimId,
-        Status: status,
-      });
-      // console.log(record.Status);
-      // if(record.Status == false){
-
-      // }
-      if(record){
-        await record.save();
-        res.status(200).json({ IsSuccess: true , Data: 1 , Message: "User Blocked...!!!" });
+      var existBlockedData = await blockuserModel.aggregate([
+      { $group: { 
+        _id: { userId: userId, victimId: victimId , Status: status }, 
+        uniqueIds: { $addToSet: "$_id" },
+        count: { $sum: 1 } 
+      }}, 
+      { $match: { 
+        count: { $gte: 1 } 
+      }}
+    ]);
+      console.log(existBlockedData);
+      if(existBlockedData.length != 0){
+        res.status(200).json({
+          IsSuccess: true,
+          Data: 0,
+          Message: "User is already Blocked",
+        })
       }else{
-        res.status(400).json({ IsSuccess: true , Data: 0 , Message: "User Not Blocked...!!!" });
+        var record = new blockuserModel({
+          UserId: userId,
+          VictimId: victimId,
+          Status: status,
+        });
+        
+        if(record){
+          await record.save();
+          res.status(200).json({ IsSuccess: true , Data: 1 , Message: "User Blocked...!!!" });
+        }else{
+          res.status(400).json({ IsSuccess: true , Data: 0 , Message: "User Not Blocked...!!!" });
+        }
       } 
     } catch (error) {
       res.status(500).json({ IsSuccess: false , Message: error.message });
     }    
   },
 
-  getUserBlockList: async function(req,res,nexr){
+  userBlockRemove: async function(req,res,next){
+    const { id } = req.body;
+    try {
+      var record = await blockuserModel.deleteOne({ _id: id});
+      if(record){
+        res.status(200).json({ IsSuccess: true , Data: 1 , Message: "Remove from Block...!!!" });
+      }else{
+        res.status(400).json({ IsSuccess: true , Data: 0 , Message: "Not Updates...!!!" });
+      }
+    } catch (error) {
+      res.status(500).json({ IsSuccess: false , Message: error.message });
+    }
+  },
+
+  getUserBlockList: async function(req,res,next){
     const { UserId } = req.body;
 
     try {
