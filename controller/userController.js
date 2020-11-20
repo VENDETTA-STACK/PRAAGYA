@@ -234,30 +234,30 @@ module.exports = {
 
   getUsers: async (req, res) => {
     //const user = await userSchemaModel.find({Status:true}).sort({ created: -1 });
-    // const user = await userSchemaModel.find()
-    //                                   .populate({
-    //                                     path: "blockUsers",
-    //                                   })
-    //                                   .sort({ created: -1 });
+    const user = await userSchemaModel.find()
+                                      .populate({
+                                        path: "blockUsers",
+                                      })
+                                      .sort({ created: -1 });
 
-    const user = await userSchemaModel.aggregate([
-      {
-        $project: {
-          "_id": {
-            "$toString": "$_id"
-          }
-        }
-      },
-      {
-        "$lookup":
-          {
-            from: "BlockUser",
-            localField: "_id",
-            foreignField: "UserId",
-            as: "Blocked Users"
-          }
-     }
-   ]);
+  //   const user = await userSchemaModel.aggregate([
+  //     {
+  //       $project: {
+  //         "_id": {
+  //           "$toString": "$_id"
+  //         }
+  //       }
+  //     },
+  //     {
+  //       "$lookup":
+  //         {
+  //           from: "BlockUser",
+  //           localField: "_id",
+  //           foreignField: "UserId",
+  //           as: "Blocked Users"
+  //         }
+  //    }
+  //  ]);
     if (!user) {
       res.status(500).json({ error: true, data: "no user found !" });
     } else {

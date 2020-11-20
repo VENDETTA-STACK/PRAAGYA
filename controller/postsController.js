@@ -7,6 +7,9 @@ const { commentSchemaModel } = require("../models/commentsModel");
 const { likeSchemaModel } = require("../models/likesModel");
 const { select } = require("underscore");
 const commentsModel = require("../models/commentsModel");
+const { blockuserModel } = require("../models/blockUser");
+var mongoose = require("mongoose");
+const blockUser = require("../models/blockUser");
 
 module.exports = {
   createPost: async (req, res) => {
@@ -254,6 +257,28 @@ module.exports = {
       }else{
         res.status(400).json({ isSuccess : true , Data : 0 , Message : "Empty Data" });
       }
+    } catch (error) {
+      res.status(500).json({ isSuccess : false , Message : error.message });
+    }
+  },
+  //Hide Block Users Post---/20-11-2020
+  get_User_Post: async function(req,res,next){
+    try {
+      const { UserId } = req.body;
+      var blockUsersList = await blockuserModel.find({ UserId: mongoose.Types.ObjectId(UserId) });
+      //console.log(blockUsersList);
+      let blockUsersIds = [];
+      for(var i=0;i<blockUsersList.length;i++){
+        blockUsersIds.push(blockUsersList[i].VictimId);
+      }
+      //console.log(blockUsersIds);
+      var record = await postSchemaModel.find({ user_id: { $nin: blockUsersIds } });
+      if(record){
+        res.status(200).json({ isSuccess : true , Count: record.length , Data : record , Message : "Data Found" });
+      }else{
+        res.status(400).json({ isSuccess : true , Data : 0 , Message : "Empty Data" });
+      }
+      console.log(record);
     } catch (error) {
       res.status(500).json({ isSuccess : false , Message : error.message });
     }
