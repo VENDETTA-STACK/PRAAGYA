@@ -15,6 +15,7 @@ const { blockuserModel } = require("../models/blockUser");
 const { degrees, PDFDocument, rgb, StandardFonts } = require("pdf-lib");
 const { worker } = require("cluster");
 const { use } = require("../app");
+var mongoose = require("mongoose");
 
 module.exports = {
   createUser: async (req, res) => {
@@ -233,7 +234,30 @@ module.exports = {
 
   getUsers: async (req, res) => {
     //const user = await userSchemaModel.find({Status:true}).sort({ created: -1 });
-    const user = await userSchemaModel.find().sort({ created: -1 });
+    // const user = await userSchemaModel.find()
+    //                                   .populate({
+    //                                     path: "blockUsers",
+    //                                   })
+    //                                   .sort({ created: -1 });
+
+    const user = await userSchemaModel.aggregate([
+      {
+        $project: {
+          "_id": {
+            "$toString": "$_id"
+          }
+        }
+      },
+      {
+        "$lookup":
+          {
+            from: "BlockUser",
+            localField: "_id",
+            foreignField: "UserId",
+            as: "Blocked Users"
+          }
+     }
+   ]);
     if (!user) {
       res.status(500).json({ error: true, data: "no user found !" });
     } else {
@@ -443,37 +467,57 @@ module.exports = {
     const { userId , victimId , status } = req.body;
 
     try {
-      var existBlockedData = await blockuserModel.aggregate([
-      { $group: { 
-        _id: { userId: userId, victimId: victimId , Status: status }, 
-        uniqueIds: { $addToSet: "$_id" },
-        count: { $sum: 1 } 
-      }}, 
-      { $match: { 
-        count: { $gte: 1 } 
-      }}
-    ]);
-      console.log(existBlockedData);
-      if(existBlockedData.length != 0){
-        res.status(200).json({
-          IsSuccess: true,
-          Data: 0,
-          Message: "User is already Blocked",
-        })
-      }else{
-        var record = new blockuserModel({
-          UserId: userId,
-          VictimId: victimId,
-          Status: status,
+    //   var existBlockedData = await blockuserModel.aggregate([
+    //   { $group: { 
+    //     _id: { userId: userId, victimId: victimId , Status: status }, 
+    //     uniqueIds: { $addToSet: "$_id" },
+    //     count: { $sum: 1 } 
+    //   }}, 
+    //   { $match: { 
+    //     count: { $gte: 1 } 
+    //   }}
+    // ]);
+      if(req.body.status == "true"){
+        var existBlockedData = await blockuserModel.find({ 
+          UserId: mongoose.Types.ObjectId(userId), 
+          VictimId: mongoose.Types.ObjectId(victimId),
+          Status: status, 
         });
-        
-        if(record){
-          await record.save();
-          res.status(200).json({ IsSuccess: true , Data: 1 , Message: "User Blocked...!!!" });
+        console.log(existBlockedData);
+        if(existBlockedData.length != 0){
+          res.status(200).json({
+            IsSuccess: true,
+            Data: 0,
+            Message: "User is already Blocked",
+          })
         }else{
-          res.status(400).json({ IsSuccess: true , Data: 0 , Message: "User Not Blocked...!!!" });
+          var record = new blockuserModel({
+            UserId: userId,
+            VictimId: victimId,
+            Status: status,
+          });
+          
+          if(record){
+            await record.save();
+            res.status(200).json({ IsSuccess: true , Data: 1 , Message: "User Blocked...!!!" });
+          }else{
+            res.status(400).json({ IsSuccess: true , Data: 0 , Message: "User Not Blocked...!!!" });
+          }
+        } 
+      }else{
+        var removeFromBlock = await blockuserModel.find({
+          UserId: mongoose.Types.ObjectId(userId), 
+          VictimId: mongoose.Types.ObjectId(victimId),
+          Status: true
+        });
+        if(removeFromBlock){
+          let removeId = removeFromBlock[0]._id;
+          await blockuserModel.deleteOne({ _id: removeId});
+          res.status(200).json({ IsSuccess: true , Data: 0 , Message: "Remove From Block" });
+        }else{
+          res.status(400).json({ IsSuccess: false , Message: "Id already unblock" });
         }
-      } 
+      }
     } catch (error) {
       res.status(500).json({ IsSuccess: false , Message: error.message });
     }    

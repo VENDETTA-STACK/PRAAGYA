@@ -82,6 +82,10 @@ var userSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  blockUsers: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "BlockUser", 
+  }
 });
 // userSchema.plugin(uniqueValidator);
 var userSchemaModel = mongoose.model("users", userSchema);

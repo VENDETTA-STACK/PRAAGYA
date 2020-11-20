@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
 
 var blockUserSchema = mongoose.Schema({
+    // _id: mongoose.Schema.Types.ObjectId,
     UserId:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "users",
