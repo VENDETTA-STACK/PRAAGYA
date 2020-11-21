@@ -234,11 +234,18 @@ module.exports = {
 
   getUsers: async (req, res) => {
     //const user = await userSchemaModel.find({Status:true}).sort({ created: -1 });
-    const user = await userSchemaModel.find()
-                                      .populate({
-                                        path: "blockUsers",
-                                      })
+    const { UserId } = req.body;
+    var blockUsersList = await blockuserModel.find({ UserId: mongoose.Types.ObjectId(UserId) });
+      //console.log(blockUsersList);
+      let blockUsersIds = [];
+      for(var i=0;i<blockUsersList.length;i++){
+        blockUsersIds.push(blockUsersList[i].VictimId);
+      }
+      console.log(blockUsersIds);
+    const user = await userSchemaModel.find({ _id: { $nin: blockUsersIds } })
                                       .sort({ created: -1 });
+    
+                                      //console.log(user);
 
   //   const user = await userSchemaModel.aggregate([
   //     {
@@ -261,7 +268,7 @@ module.exports = {
     if (!user) {
       res.status(500).json({ error: true, data: "no user found !" });
     } else {
-      res.status(200).json({ error: false, data: user });
+      res.status(200).json({ error: false, Count: user.length ,data: user });
     }
   },
   verifyUser: async (req, res) => {
