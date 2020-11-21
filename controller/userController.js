@@ -16,6 +16,7 @@ const { degrees, PDFDocument, rgb, StandardFonts } = require("pdf-lib");
 const { worker } = require("cluster");
 const { use } = require("../app");
 var mongoose = require("mongoose");
+const { populate } = require("../models/reportModel");
 
 module.exports = {
   createUser: async (req, res) => {
@@ -244,8 +245,6 @@ module.exports = {
       console.log(blockUsersIds);
     const user = await userSchemaModel.find({ _id: { $nin: blockUsersIds } })
                                       .sort({ created: -1 });
-    
-                                      //console.log(user);
 
   //   const user = await userSchemaModel.aggregate([
   //     {
@@ -556,6 +555,15 @@ module.exports = {
                                      })
                                      .populate({
                                        path : 'VictimId',
+                                      //  populate: {
+                                      //    path: "country"
+                                      //  },
+                                       populate: {
+                                         path: "state",
+                                         populate: {
+                                           path: "countryId"
+                                         }
+                                       },
                                      });
         // console.log(record[0])
       if(record){
