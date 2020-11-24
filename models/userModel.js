@@ -40,6 +40,11 @@ var userSchema = mongoose.Schema({
   schoolName: String,
   schoolAddress: String,
   schoolLocation: String,
+  // schoolLogo: {
+  //   type: String,
+  //   default: "default-user-profile-image.png"
+  // },
+  // boardName: String,
   affilatedWith: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Affiliation",

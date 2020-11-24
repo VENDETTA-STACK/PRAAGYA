@@ -17,8 +17,26 @@ const { worker } = require("cluster");
 const { use } = require("../app");
 var mongoose = require("mongoose");
 const { populate } = require("../models/reportModel");
+const multer = require("multer");
+
+// var schoolLogoLocation = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//       cb(null, "uploads/schoolLogo");
+//   },
+//   filename: function (req, file, cb) {
+//       cb(
+//           null,
+//           file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+//       );
+//   },
+// });
+
+// var uploadSchoolLogo = multer({ storage: schoolLogoLocation });
 
 module.exports = {
+
+  // uploadSchoolLogo,
+
   createUser: async (req, res) => {
     const user = {
       name: req.body.name,
@@ -40,6 +58,7 @@ module.exports = {
           req.body.affilatedwith
         );
         var genreatedPDF = await createmembershippdf(req.body.name);
+        const file = req.file;
         return new Promise((resolve, reject) => {
           const userModel = userSchemaModel({
             name: req.body.name,
@@ -54,7 +73,9 @@ module.exports = {
             stateCode: membershipNumber.statecode,
             affiliationCode: membershipNumber.affiliationcode,
             membershipNumber: membershipNumber.membershipcode,
-            schoolName: req.body.schoolname,
+            // schoolName: req.body.schoolname,
+            // schoolLogo: file != undefined ? file.path : "",
+            boardName: req.body.boardName,
             schoolAddress: req.body.schoolAddress,
             schoolLocation: req.body.schoollocation,
             affilatedWith: req.body.affilatedwith,
@@ -244,7 +265,10 @@ module.exports = {
       }
       console.log(blockUsersIds);
     const user = await userSchemaModel.find({ _id: { $nin: blockUsersIds } })
-                                      .sort({ created: -1 });
+                                      .sort({ created: -1 })
+                                      .populate({
+                                        path: "affilatedWith"
+                                      });
 
   //   const user = await userSchemaModel.aggregate([
   //     {

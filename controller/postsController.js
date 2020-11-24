@@ -122,13 +122,6 @@ module.exports = {
         .sort({ createdAt: -1 })
         .populate(user_id)
         .populate("user_id", "img name _id");
-
-      // const posts = await postSchemaModel.find().populate("comment");
-      // const record = await commentSchemaModel.find().populate(user_id);
-      // console.log(record);
-      // const commentsData = await commentSchemaModel.find();
-      
-      // let record = [posts , commentsData];
      
       if (posts.length === 0) {
         results.error = true;
