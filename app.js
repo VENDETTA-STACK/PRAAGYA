@@ -37,12 +37,12 @@ app.use("/api/uploads", express.static("uploads"));
 
 // parse an HTML body into a string
 app.use(bodyParser.json());
-const serviceAccount = require("./vchatappmongo-firebase-adminsdk-r81s8-00cd33ab16.json");
+const serviceAccount = require("./pragya-principal-67d45-firebase-adminsdk-78ii0-aa821e8f1f.json");
 var admin = require("firebase-admin");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://pragya-principal.firebaseio.com",
+  databaseURL: "https://pragya-principal-67d45.firebaseio.com",
 });
 
 // for local

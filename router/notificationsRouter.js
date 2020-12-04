@@ -6,6 +6,7 @@ const notificationsController = require('../controller/notificationController');
 
 
 notificationsRouter.post("/fetch_all", notificationsController.getNotifications);
+notificationsRouter.post("/deleteAll", notificationsController.deleteAll);
 
 
 module.exports = notificationsRouter;

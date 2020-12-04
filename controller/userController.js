@@ -727,6 +727,11 @@ module.exports = {
       res.status(200).json({ error: true, data: "Done." });
     }
   },
+
+  // removeAllUsers : async function(req,res){
+  //   const record = await userSchemaModel.deleteMany();
+  //   res.status(200).json({ message: "Done" });
+  // },
   
   getuserbyfilter : async function(req,res){
     const user = await userSchemaModel.find({state:req.body.stateid,affilatedWith:req.body.affiatedid});

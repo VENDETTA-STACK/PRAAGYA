@@ -1,4 +1,5 @@
 "use strict";
+const { not } = require("joi");
 //created by Hatem Ragap
 
 const { notificationsSchemaModel } = require("../models/notificationsModel");
@@ -13,5 +14,9 @@ module.exports = {
     } else {
       res.status(200).json({ error: false, data: notifications });
     }
+  },
+  deleteAll : async (req,res) => {
+    var record = await notificationsSchemaModel.deleteMany();
+    res.send("Done");
   },
 };

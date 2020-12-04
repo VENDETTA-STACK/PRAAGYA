@@ -18,6 +18,7 @@ const upload = multer({storage: storage});
 messageRouter.post('/fetch_all', messageController.fetchAll);
 messageRouter.post('/fetch_all_messages', messageController.getAllMessageData);
 messageRouter.post('/deleteMessageById', messageController.deleteMessageById);
+// messageRouter.post('/deleteAll', messageController.deleteAll);
 messageRouter.post('/upload_img_message', upload.single('img'), messageController.uploadMessageImageOnly);
 
 

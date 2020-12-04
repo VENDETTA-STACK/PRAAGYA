@@ -69,6 +69,11 @@ module.exports = {
     }
   },
 
+  // deleteAll: async (req,res) =>{
+  //   var record = await messageSchemaModel.deleteMany();
+  //   res.send("Done");
+  // },
+
   getAllMessageData: async (req , res) => {
     try {
       let data = await messageSchemaModel.find()

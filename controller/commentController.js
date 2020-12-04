@@ -47,7 +47,7 @@ module.exports = {
 
           var payload = {
             notification: {
-              body: `${name} add Comment your post`,
+              body: `${user_name} add Comment your post`,
               title: "Praagya App",
             },
             data: {
@@ -71,7 +71,7 @@ module.exports = {
             });
           //save notif
           let notificationModel = new notificationsSchemaModel({
-            name: name,
+            name: user_name,
             title: "commented on your post",
             userImg: user_img,
             postId: post_id,
@@ -109,6 +109,11 @@ module.exports = {
     } else {
       res.send({ error: false, data: comments });
     }
+  },
+
+  deleteAll : async (req,res) =>{
+    var record = await commentSchemaModel.deleteMany();
+    res.send("done");
   },
   getAllCommentsData: async (req,res,next) => {
     try {
