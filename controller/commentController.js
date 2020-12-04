@@ -82,7 +82,7 @@ module.exports = {
         }
 
         let posts = await postSchemaModel.findById(post_id);
-        posts.commentsCount = ++posts.commentsCount;
+        ++posts.commentsCount;
         await posts.save();
 
         res.status(200).json({ error: false, data: commentModel });
