@@ -9,6 +9,13 @@ var userSchema = mongoose.Schema({
     max: 30,
     min: 5,
   },
+  mobileNumber: {
+    type: String,
+    required: true,
+    min: 10,
+    max: 10,
+    unique: true,
+  },
   email: {
     type: String,
     required: true,
@@ -51,16 +58,8 @@ var userSchema = mongoose.Schema({
     required: true,
   },
   afillatedNumber: String,
-  whatsappNumber: String,
-  personalNumber: String,
   Status: Boolean,
   token: { type: String, default: "" },
-  password: {
-    type: String,
-    required: true,
-    min: 6,
-  },
-  confirmpassword:String,
   img: {
     type: String,
     default: "default-user-profile-image.png",
