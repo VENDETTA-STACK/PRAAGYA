@@ -49,7 +49,8 @@ module.exports = {
       //   personalNumber: req.body.personalnumber,
       // });
       //if (email.length == 0 && mobile.length == 0) {}
-        if (mobileNumber.length == 0) {
+      console.log("Mobile Number found: " + JSON.stringify(mobileNumber));
+      if (mobileNumber.length == 0) {
         //const hashedPassword = await passwordHash.generate(req.body.password);
         var membershipNumber = await creatingmembershipid(
           req.body.state,
@@ -88,7 +89,7 @@ module.exports = {
               console.log("err:" + err.message);
               res.status(500).json({
                 error: true,
-                data: "email already used choose another" + err,
+                data: "Mobile Number Already Used. Please chose another mobile number. " + err,
                 chatId: [],
               });
             } else {
@@ -148,8 +149,8 @@ module.exports = {
   loginUser: async (req, res) => {
     const { error } = loginUserValidation(req.body);
     if (!error) {
-      const { email, password } = req.body;
-      const user = await userSchemaModel.findOne({ email });
+      const { mobileNumber } = req.body;
+      const user = await userSchemaModel.findOne({ mobileNumber });
       console.log(user);
       if (!user) {
         res
@@ -758,8 +759,7 @@ function updatePasswordValidation(user) {
 
 function loginUserValidation(user) {
   const schema = Joi.object().keys({
-    email: Joi.required(),
-    password: Joi.required(),
+    mobileNumber: Joi.required(),
   });
   return Joi.validate(user, schema);
 }
