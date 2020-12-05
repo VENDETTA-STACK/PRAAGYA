@@ -153,25 +153,15 @@ module.exports = {
       const user = await userSchemaModel.findOne({ mobileNumber });
       console.log(user);
       if (!user) {
-        res
-          .status(500)
-          .json({ error: true, data: "no email found please register !" });
+        res.status(500).json({ error: true, data: "No Mobile Number found please register first!" });
       }
-      const isPasswordMatch = await passwordHash.verify(
-        password,
-        user.password
-      );
-      if (!isPasswordMatch) {
-        res.status(500).json({ error: true, data: "password not match !" });
-      } else {
-        if (user.Status == false) {
-          res.status(500).json({ error: true, data: "User is blocked." });
-        }
-        else{
-          res.status(200).json({ error: false, data: user });
-        }        
-        
+      
+      if (user.Status == false) {
+        res.status(500).json({ error: true, data: "User is blocked." });
       }
+      else{
+        res.status(200).json({ error: false, data: user });
+      } 
     } else {
       let detail = error.details[0].message;
       res.send({ error: true, data: detail });
