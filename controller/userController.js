@@ -50,7 +50,7 @@ module.exports = {
       // });
       //if (email.length == 0 && mobile.length == 0) {}
         if (mobileNumber.length == 0) {
-        const hashedPassword = await passwordHash.generate(req.body.password);
+        //const hashedPassword = await passwordHash.generate(req.body.password);
         var membershipNumber = await creatingmembershipid(
           req.body.state,
           req.body.affilatedwith
