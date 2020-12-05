@@ -85,6 +85,7 @@ module.exports = {
           });
           userModel.save(async (err) => {
             if (err) {
+              console.log("err:" + err.message);
               res.status(500).json({
                 error: true,
                 data: "email already used choose another" + err,
