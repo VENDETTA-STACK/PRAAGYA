@@ -40,18 +40,16 @@ module.exports = {
   createUser: async (req, res) => {
     const user = {
       name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
+      mobileNumber: req.body.mobileNumber,
     };
     const { error } = createUserValidation(user);
     if (!error) {
-      var email, mobile;
-      email = await userSchemaModel.find({ email: req.body.email });
+      var mobileNumber = await userSchemaModel.find({ mobileNumber: req.body.mobileNumber });
       // mobile = await userSchemaModel.find({
       //   personalNumber: req.body.personalnumber,
       // });
       //if (email.length == 0 && mobile.length == 0) {}
-        if (email.length == 0) {
+        if (mobileNumber.length == 0) {
         const hashedPassword = await passwordHash.generate(req.body.password);
         var membershipNumber = await creatingmembershipid(
           req.body.state,
@@ -63,8 +61,7 @@ module.exports = {
           const userModel = userSchemaModel({
             name: req.body.name,
             email: req.body.email,
-            password: hashedPassword,
-            confirmpassword:req.body.confirmpassword,
+            mobileNumber: req.body.mobileNumber,
             gender: req.body.gender,
             dob: req.body.dob,
             country: req.body.country,
@@ -80,8 +77,6 @@ module.exports = {
             schoolLocation: req.body.schoollocation,
             affilatedWith: req.body.affilatedwith,
             afillatedNumber: req.body.affilatednumber,
-            whatsappNumber: req.body.whatsappnumber,
-            personalNumber: req.body.personalnumber,
             Status: true,
             membershipPDF: genreatedPDF,
             created: moment()
@@ -133,11 +128,11 @@ module.exports = {
         });
       } else {
        // if (email.length == 1 && mobile.length == 1) {
-        if (email.length == 1 ) {
-          res.send({ error: true, data: "Email already taken" });
+        if (mobileNumber.length == 1 ) {
+          res.send({ error: true, data: "Mobile Number already registered." });
         } else {
-          if (email.length == 1) {
-            res.send({ error: true, data: "Email already taken" });
+          if (mobileNumber.length == 1) {
+            res.send({ error: true, data: "Mobile Number already registered." });
           }
           // } else {
           //   res.send({ error: true, data: "Mobile already taken" });
