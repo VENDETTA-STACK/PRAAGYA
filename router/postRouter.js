@@ -14,6 +14,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage: storage});
 
+postRouter.get("/getPostImg/:image_file_name", postsController.getPostImage);
 postRouter.post("/create", upload.single('img'), postsController.createPost);
 postRouter.post("/fetch", postsController.getPosts);
 postRouter.post("/getPostById", postsController.getPostById);
