@@ -71,7 +71,7 @@ module.exports = {
             stateCode: membershipNumber.statecode,
             affiliationCode: membershipNumber.affiliationcode,
             membershipNumber: membershipNumber.membershipcode,
-            schoolName: req.body.schoolname,
+            schoolName: req.body.schoolName,
             // schoolLogo: file != undefined ? file.path : "",
             boardName: req.body.boardName,
             schoolAddress: req.body.schoolAddress,
@@ -104,8 +104,8 @@ module.exports = {
                 chatId: [],
               });
             } else {
-              res.status(500).json({
-                error: true,
+              res.status(200).json({
+                error: false,
                 data: "Register Successfully",
                });
               try{
@@ -131,8 +131,8 @@ module.exports = {
                   res.status(200).json({ error: false, data: userModel });
               }
               catch(err){
-                res.send(500).json({
-                  error : true,
+                res.send(200).json({
+                  error : false,
                   data : "Registration successfull",
                 });
               }
