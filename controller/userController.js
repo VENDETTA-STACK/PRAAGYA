@@ -87,15 +87,26 @@ module.exports = {
           userModel.save(async (err) => {
             if (err) {
               console.log("err:" + err.message);
+              const errObj = err.keyValue;
+              const errFields = Object.keys(errObj);
+
+              let errorStr = "";
+              errFields.forEach(errField => {
+                if(err.code == 11000) {
+                  errorStr += `${errField} already exists. Please chose another.`;
+                } else {
+                  errorStr += `name: ${err.name}, code: ${err.code}, errorInField: ${errObj[errField]}`;
+                }
+              });
               res.status(500).json({
                 error: true,
-                data: "Mobile Number Already Used. Please chose another mobile number. " + err,
+                data: errorStr,
                 chatId: [],
               });
             } else {
               res.status(500).json({
                 error: true,
-                data: "Register Sucessfully",
+                data: "Register Successfully",
                });
               try{
                 // for sending message
