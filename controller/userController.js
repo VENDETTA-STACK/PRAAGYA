@@ -71,7 +71,7 @@ module.exports = {
             stateCode: membershipNumber.statecode,
             affiliationCode: membershipNumber.affiliationcode,
             membershipNumber: membershipNumber.membershipcode,
-            // schoolName: req.body.schoolname,
+            schoolName: req.body.schoolname,
             // schoolLogo: file != undefined ? file.path : "",
             boardName: req.body.boardName,
             schoolAddress: req.body.schoolAddress,
