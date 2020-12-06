@@ -10,6 +10,7 @@ const commentsModel = require("../models/commentsModel");
 const { blockuserModel } = require("../models/blockUser");
 var mongoose = require("mongoose");
 const blockUser = require("../models/blockUser");
+const fs = require("fs");
 
 module.exports = {
   createPost: async (req, res) => {
@@ -41,6 +42,24 @@ module.exports = {
     } else {
       let detail = error.details[0].message;
       res.send({ error: true, data: detail });
+    }
+  },
+  
+  getPostImage: async (req, res) => {
+    const rootFolder = require('path').resolve('./');
+    console.log("rootFolder: " + rootFolder);
+    const filename = req.params.image_file_name;
+    console.log("filename: " + filename);
+    try {
+      let img = fs.readFileSync(`${rootFolder}/uploads/users_posts_img/${filename}`);
+      let encode_image = img.toString('base64');
+      const imgBuffer = new Buffer(encode_image, 'base64');
+
+      const format = filename.split(".")[1];
+      res.contentType(`image/${format}`);
+      res.status(200).end(imgBuffer);
+    } catch(e) {
+      res.status(500).end(e.message);
     }
   },
 
@@ -108,6 +127,7 @@ module.exports = {
     if (!error) {
       let results = {};
       
+      // const { user_id } = req.body;
       const { user_id, page } = req.body;
 
       const page_as_int = parseInt(page);
