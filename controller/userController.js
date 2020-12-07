@@ -106,10 +106,10 @@ module.exports = {
                 chatId: [],
               });
             } else {
-              res.status(200).json({
-                error: false,
-                data: "Register Successfully",
-               });
+//               res.status(200).json({
+//                 error: false,
+//                 data: "Register Successfully",
+//                });
               try{
                 // for sending message
                 //sms URL -http://websms.mitechsolution.com/api/push.json?apikey=5ea7f55b01122&route=vtrans&sender=PNDDEL&mobileno=8347766166&text=Testingg%20%20
@@ -127,13 +127,13 @@ module.exports = {
                     "." +
                     "Kindly copy the following link to genrate Membership Certificate. http://15.206.249.190/api/uploads/Certificate/" + genreatedPDF;
                   var url =
-                      "http://websms.mitechsolution.com/api/push.json?apikey=5ea7f55b01122&route=vtrans&sender=PNDDEL&mobileno="+ req.body.personalnumber +"&text="+ body;
+                      "http://websms.mitechsolution.com/api/push.json?apikey=5ea7f55b01122&route=vtrans&sender=PNDDEL&mobileno="+ req.body.mobileNumber +"&text="+ body;
                   let getResponse = await axios.get(url);
                   console.log(getResponse.data.ErrorMessage);
                   res.status(200).json({ error: false, data: userModel });
               }
               catch(err){
-//                 console.log("err-1: " + err.message);
+                console.log("err-1: " + err.message);
                 res.status(500).json({
                   error : true,
                   data : "Registration unsuccessfull",
