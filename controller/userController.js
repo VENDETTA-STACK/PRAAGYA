@@ -98,6 +98,8 @@ module.exports = {
                   errorStr += `name: ${err.name}, code: ${err.code}, errorInField: ${errObj[errField]}`;
                 }
               });
+              
+              console.log("err-3: " + errorStr);
               res.status(500).json({
                 error: true,
                 data: errorStr,
@@ -128,12 +130,13 @@ module.exports = {
                       "http://websms.mitechsolution.com/api/push.json?apikey=5ea7f55b01122&route=vtrans&sender=PNDDEL&mobileno="+ req.body.personalnumber +"&text="+ body;
                   let getResponse = await axios.get(url);
                   console.log(getResponse.data.ErrorMessage);
-                  res.status(200).json({ error: false, data: userModel });
+                  res.send(200).json({ error: false, data: userModel });
               }
               catch(err){
-                res.send(200).json({
-                  error : false,
-                  data : "Registration successfull",
+                console.log("err-1: " + err.message);
+                res.send(500).json({
+                  error : true,
+                  data : "Registration unsuccessfull",
                 });
               }
             }
@@ -153,6 +156,7 @@ module.exports = {
         }
       }
     } else {
+      console.log("err-2: " + error.details[0].message);
       let detail = error.details[0].message;
       res.send({ error: true, data: detail });
     }
