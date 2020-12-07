@@ -133,7 +133,7 @@ module.exports = {
                   res.status(200).json({ error: false, data: userModel });
               }
               catch(err){
-                console.log("err-1: " + err.message);
+//                 console.log("err-1: " + err.message);
                 res.status(500).json({
                   error : true,
                   data : "Registration unsuccessfull",
