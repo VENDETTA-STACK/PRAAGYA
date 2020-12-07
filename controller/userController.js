@@ -100,13 +100,13 @@ module.exports = {
               });
               
               console.log("err-3: " + errorStr);
-              res.send(500).json({
+              res.status(500).json({
                 error: true,
                 data: errorStr,
                 chatId: [],
               });
             } else {
-              res.send(200).json({
+              res.status(200).json({
                 error: false,
                 data: "Register Successfully",
                });
@@ -130,11 +130,11 @@ module.exports = {
                       "http://websms.mitechsolution.com/api/push.json?apikey=5ea7f55b01122&route=vtrans&sender=PNDDEL&mobileno="+ req.body.personalnumber +"&text="+ body;
                   let getResponse = await axios.get(url);
                   console.log(getResponse.data.ErrorMessage);
-                  res.send(200).json({ error: false, data: userModel });
+                  res.status(200).json({ error: false, data: userModel });
               }
               catch(err){
                 console.log("err-1: " + err.message);
-                res.send(500).json({
+                res.status(500).json({
                   error : true,
                   data : "Registration unsuccessfull",
                 });
