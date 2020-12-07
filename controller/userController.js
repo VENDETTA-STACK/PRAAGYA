@@ -100,13 +100,13 @@ module.exports = {
               });
               
               console.log("err-3: " + errorStr);
-              res.status(500).json({
+              res.send(500).json({
                 error: true,
                 data: errorStr,
                 chatId: [],
               });
             } else {
-              res.status(200).json({
+              res.send(200).json({
                 error: false,
                 data: "Register Successfully",
                });
