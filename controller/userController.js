@@ -260,14 +260,15 @@ module.exports = {
   getUsers: async (req, res) => {
     //const user = await userSchemaModel.find({Status:true}).sort({ created: -1 });
     const { UserId } = req.body;
-    var blockUsersList = await blockuserModel.find({ UserId: mongoose.Types.ObjectId(UserId) });
-      //console.log(blockUsersList);
-      let blockUsersIds = [];
-      for(var i=0;i<blockUsersList.length;i++){
-        blockUsersIds.push(blockUsersList[i].VictimId);
-      }
-      console.log(blockUsersIds);
-    const user = await userSchemaModel.find({ _id: { $nin: blockUsersIds } })
+    const objectUserId = mongoose.Types.ObjectId(UserId);
+    var blockUsersList = await blockuserModel.find({ UserId: objectUserId });
+    //console.log(blockUsersList);
+    let blockUsersIds = [];
+    for(let i=0; i<blockUsersList.length; i++){
+      blockUsersIds.push(blockUsersList[i].VictimId);
+    }
+    console.log(blockUsersIds);
+    const user = await userSchemaModel.find({ _id: { $nin: blockUsersIds.concat(objectUserId) } })
                                       .sort({ created: -1 })
                                       .populate({
                                         path: "affilatedWith"
