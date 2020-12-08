@@ -7,7 +7,7 @@ var userSchema = mongoose.Schema({
   name: {
     type: String,
     max: 30,
-    min: 5,
+    min: 1,
   },
   mobileNumber: {
     type: String,
