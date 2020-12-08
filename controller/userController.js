@@ -169,6 +169,7 @@ module.exports = {
       console.log(user);
       if (!user) {
         res.status(500).json({ error: true, data: "No Mobile Number found please register first!" });
+        return;
       }
       
       if (user.Status == false) {
