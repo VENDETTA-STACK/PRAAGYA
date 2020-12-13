@@ -259,8 +259,28 @@ module.exports = {
 
   getUsers: async (req, res) => {
     //const user = await userSchemaModel.find({Status:true}).sort({ created: -1 });
-    const { UserId } = req.body;
-    const objectUserId = mongoose.Types.ObjectId(UserId);
+    const { UserId, keyword } = req.body;
+    let searchKeyword = keyword || "";
+
+    if(!UserId) {
+      res.status(400).json({ error: true, data: "User Id missing." });
+      return;
+    } 
+
+    if(typeof UserId != "string") {
+      res.status(400).json({ error: true, data: "Invalid User Id." });
+      return;
+    }
+
+    let objectUserId;
+
+    try {
+      objectUserId = mongoose.Types.ObjectId(UserId);
+    } catch(e) {
+      res.status(400).json({ error: true, data: "Invalid User Id." });
+      return;
+    }
+
     var blockUsersList = await blockuserModel.find({ UserId: objectUserId });
     //console.log(blockUsersList);
     let blockUsersIds = [];
@@ -268,30 +288,71 @@ module.exports = {
       blockUsersIds.push(blockUsersList[i].VictimId);
     }
     console.log(blockUsersIds);
-    const user = await userSchemaModel.find({ _id: { $nin: blockUsersIds.concat(objectUserId) } })
-                                      .sort({ created: -1 })
-                                      .populate({
-                                        path: "affilatedWith"
-                                      });
+    // const user = await userSchemaModel.find({ _id: { $nin: blockUsersIds.concat(objectUserId) } })
+    //                                   .sort({ created: -1 })
+    //                                   .populate({
+    //                                     path: "affilatedWith"
+    //                                   });
 
-  //   const user = await userSchemaModel.aggregate([
-  //     {
-  //       $project: {
-  //         "_id": {
-  //           "$toString": "$_id"
-  //         }
-  //       }
-  //     },
-  //     {
-  //       "$lookup":
-  //         {
-  //           from: "BlockUser",
-  //           localField: "_id",
-  //           foreignField: "UserId",
-  //           as: "Blocked Users"
-  //         }
-  //    }
-  //  ]);
+    const user = await userSchemaModel.aggregate([
+      {
+        $match: {
+          _id: { $nin: blockUsersIds.concat(objectUserId) }
+        },
+      },
+      {
+        $lookup: {
+          from: "affiliations",
+          localField: "affilatedWith",
+          foreignField: "_id",
+          as: "affiliations"
+        }
+      },
+      {
+        $unwind: { path: "$affiliations", preserveNullAndEmptyArrays: true }
+      },
+      {
+        $addFields: {
+          searchKeywordField: { $concat: ["$affiliations.Name", "*", 
+                                          "$name", "*", 
+                                          "$schoolName", "*", 
+                                          "$schoolAddress", "*",
+                                          "$city"] }
+        }
+      },
+      {
+        $match: {
+          searchKeywordField: { $regex: searchKeyword, $options: 'i' }
+        }
+      },
+      // {
+      //   $or: [
+      //     { name: { $regex: searchKeyword, $options: 'i' } },
+      //     { schoolName: { $regex: searchKeyword, $options: 'i' } },
+      //     { schoolAddress: { $regex: searchKeyword, $options: 'i' } },
+      //     { affiliation: { $regex: searchKeyword, $options: 'i' } },
+      //     { city: { $regex: searchKeyword, $options: 'i' } }
+      //   ]
+      // },
+      // {
+      //   $search: {
+      //     "compound": {
+      //       "must": [{
+      //         "text": {
+      //           "query": searchKeyword,
+      //           "path": "name"
+      //         }
+      //       }]
+      //     }
+      //   }
+      // },
+      {
+        $project: {
+          affiliations: 0,
+          affiliation: 0
+        }
+      }
+   ]);
     if (!user) {
       res.status(500).json({ error: true, data: "no user found !" });
     } else {
