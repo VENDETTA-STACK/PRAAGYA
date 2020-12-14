@@ -317,7 +317,8 @@ module.exports = {
                                           "$name", "*", 
                                           "$schoolName", "*", 
                                           "$schoolAddress", "*",
-                                          "$city"] }
+                                          "$city"] },
+          boardName: "$affiliations.Name"
         }
       },
       {
