@@ -350,7 +350,8 @@ module.exports = {
       {
         $project: {
           affiliations: 0,
-          affiliation: 0
+          affiliation: 0,
+          searchKeywordField: 0
         }
       }
    ]);
